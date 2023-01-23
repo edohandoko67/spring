@@ -21,13 +21,13 @@ public class JadwalController
     private JadwalRepository jadwalRepository;
 
     @GetMapping("/list")
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    //@RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
     public List<Jadwal> listAll() {
         return jadwalRepository.findAll();
     }
 
     @PostMapping("/create")
-    @RolesAllowed("ROLE_ADMIN")
+    //@RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<Jadwal> createNewJadwal(@RequestBody @Valid Jadwal newJadwalData)
     {
         Jadwal savedJadwal = jadwalRepository.save(newJadwalData);
@@ -36,7 +36,7 @@ public class JadwalController
     }
 
     @GetMapping("/name/{name}")
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    //@RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
     public ResponseEntity<Optional<Jadwal>> Name(@PathVariable("name") String name)
     {
         if (jadwalRepository.findByName(name).isPresent())
@@ -47,7 +47,7 @@ public class JadwalController
     }
 
     @PutMapping("/update/{id}")
-    @RolesAllowed("ROLE_ADMIN")
+    //@RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<Jadwal> updateJadwal(@PathVariable Integer id, @RequestBody Jadwal updatedJadwalData)
     {
         Jadwal jadwal = jadwalRepository.findById(id).orElseThrow(() -> new JadwalNotFoundException("Jadwal not exist with id: " +id));
