@@ -24,7 +24,7 @@ public class UserController {
 
     @Autowired UserInfoRepository userInfoRepository;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse>login(@RequestBody LoginInfo loginInfo ){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginInfo.getUsername(), loginInfo.getPassword())
@@ -36,7 +36,7 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @PostMapping("registrasi")
+    @PostMapping("/registrasi")
     public ResponseEntity<?> register(@RequestBody @Valid RegistrationInfo registrationInfo){
         UserInfo userInfo = new UserInfo();
         userInfo.setUsername(registrationInfo.getUsername());
