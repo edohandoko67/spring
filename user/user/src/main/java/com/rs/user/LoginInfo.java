@@ -13,9 +13,14 @@ public class LoginInfo {
     @Length(min = 8, max = 16)
     private String password;
 
-    public LoginInfo(String username, String password) {
+    private String accessToken;
+    private String role;
+
+    public LoginInfo(String username, String password, String role, String accessToken) {
         this.username = username;
         this.password = password;
+        this.role = role;
+        this.accessToken = accessToken;
     }
 
     public String getUsername() {
@@ -32,5 +37,21 @@ public class LoginInfo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

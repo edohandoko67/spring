@@ -13,17 +13,21 @@ public class Kelola {
     private Integer id;
 
     @Column(nullable = false, length = 50)
-    @NotNull
-    @Length(min = 5, max = 50)
-    private String IdentitasPelapor;
+    @Length(max = 50)
+    private String nama;
 
-    @NotNull
-    @Length(min = 5, max = 50)
-    private String deskripsi;
+    @Column(nullable = false, length = 50)
+    @Length(min = 1, max = 50)
+    private String kategori;
+
+    @Length(max = 50)
+    private String stok;
+    private String harga;
 
     public Kelola(){
 
     }
+
     public Integer getId() {
         return id;
     }
@@ -32,19 +36,35 @@ public class Kelola {
         this.id = id;
     }
 
-    public String getIdentitasPelapor() {
-        return IdentitasPelapor;
+    public String getNama() {
+        return nama;
     }
 
-    public void setIdentitasPelapor(String identitasPelapor) {
-        IdentitasPelapor = identitasPelapor;
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 
-    public String getDeskripsi() {
-        return deskripsi;
+    public String getKategori() {
+        return kategori;
     }
 
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
+
+    public String getStok() {
+        return stok;
+    }
+
+    public void setStok(String stok) {
+        this.stok = stok;
+    }
+
+    public String getHarga() {
+        return harga;
+    }
+
+    public void setHarga(String harga) {
+        this.harga = harga;
     }
 }

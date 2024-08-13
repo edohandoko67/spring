@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @Column(nullable = false, length = 50, unique = true)
     private String name;
@@ -18,12 +18,16 @@ public class Role {
         this.name = name;
     }
 
+    public Role(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {

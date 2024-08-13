@@ -47,6 +47,7 @@ public class ApplicationConfiguration {
         httpSecurity.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.authorizeRequests().antMatchers("/login").permitAll();
         httpSecurity.authorizeRequests().antMatchers("/registrasi").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/api/data").permitAll();
         httpSecurity.authorizeRequests().anyRequest().permitAll();
         httpSecurity.exceptionHandling().authenticationEntryPoint(((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())));
         httpSecurity.addFilterBefore(jwt, UsernamePasswordAuthenticationFilter.class);
