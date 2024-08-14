@@ -45,7 +45,6 @@ public class UserController {
     //public ResponseEntity<LoginResponse>login(@RequestBody LoginInfo loginInfo ) {
     public ResponseEntity<?>login(@RequestBody LoginInfo loginInfo ) {
         try {
-
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginInfo.getUsername(), loginInfo.getPassword()));
             UserInfo user = (UserInfo) authentication.getPrincipal();
             String accessToken = jwtTokenUtility.generateAccessToken(user);
@@ -61,22 +60,37 @@ public class UserController {
             LoginResponse loginResponse = new LoginResponse(metaData, responseData);
             return ResponseEntity.ok(loginResponse);
         } catch (AuthenticationException e) {
-            MetaData metaData = new MetaData(401, "Login failed");
+            MetaData metaData = new MetaData(500, "Login failed");
             ErrorResponse errorResponse = new ErrorResponse(metaData);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @PostMapping("/registrasi")
     public ResponseEntity<?> register(@RequestBody @Valid RegistrationInfo registrationInfo){
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUsername(registrationInfo.getUsername());
-        userInfo.setPassword(passwordEncoder.encode(registrationInfo.getPassword()));
-        userInfo.setAddress(registrationInfo.getAddress());
-        userInfo.setName(registrationInfo.getName());
-        userInfo.addRole(new Role(1));
-        userInfoRepository.save(userInfo);
-        return ResponseEntity.ok().build();
+        try {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUsername(registrationInfo.getUsername());
+            userInfo.setPassword(passwordEncoder.encode(registrationInfo.getPassword()));
+            userInfo.setAddress(registrationInfo.getAddress());
+            userInfo.setName(registrationInfo.getName());
+            userInfo.addRole(new Role(1));
+            MetaData metaData = new MetaData(201, "Berhasil mendaftar");
+            RegistrationInfo responseData = new RegistrationInfo(
+                    userInfo.getUsername(),
+                    userInfo.getPassword(),
+                    userInfo.getName(),
+                    userInfo.getAddress()
+            );
+            RegisterResponse response = new RegisterResponse(metaData, responseData);
+            userInfoRepository.save(userInfo);
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            MetaData metaData = new MetaData(400, "Gagal register");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+
     }
 
 
