@@ -49,7 +49,7 @@ public class UserController {
             UserInfo user = (UserInfo) authentication.getPrincipal();
             String accessToken = jwtTokenUtility.generateAccessToken(user);
             String role = user.getRoles().toArray()[0].toString();
-            MetaData metaData = new MetaData(200, "Berhasil login");
+            MetaData metaData = new MetaData(200, "success", "Selamat Datang" + " " + user.getName());
             LoginInfo responseData = new LoginInfo(
                     user.getName(),
                     user.getUsername(),
@@ -60,7 +60,7 @@ public class UserController {
             LoginResponse loginResponse = new LoginResponse(metaData, responseData);
             return ResponseEntity.ok(loginResponse);
         } catch (AuthenticationException e) {
-            MetaData metaData = new MetaData(500, "Login failed");
+            MetaData metaData = new MetaData(500, "gagal","Login failed");
             ErrorResponse errorResponse = new ErrorResponse(metaData);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
@@ -75,7 +75,7 @@ public class UserController {
             userInfo.setAddress(registrationInfo.getAddress());
             userInfo.setName(registrationInfo.getName());
             userInfo.addRole(new Role(1));
-            MetaData metaData = new MetaData(201, "Berhasil mendaftar");
+            MetaData metaData = new MetaData(201, "success", "Berhasil mendaftar");
             RegistrationInfo responseData = new RegistrationInfo(
                     userInfo.getUsername(),
                     userInfo.getPassword(),
@@ -86,7 +86,7 @@ public class UserController {
             userInfoRepository.save(userInfo);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            MetaData metaData = new MetaData(400, "Gagal register");
+            MetaData metaData = new MetaData(400, "gagal", "Gagal register");
             ErrorResponse errorResponse = new ErrorResponse(metaData);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }

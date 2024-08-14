@@ -2,12 +2,14 @@ package com.rs.auth;
 
 public class MetaData {
     private int code;
+    private String status;
     private String message;
 
     public MetaData() {}
 
-    public MetaData(int code, String message) {
+    public MetaData(int code, String status, String message) {
         this.code = code;
+        this.status = status;
         this.message = message;
     }
 
@@ -17,6 +19,14 @@ public class MetaData {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMessage() {

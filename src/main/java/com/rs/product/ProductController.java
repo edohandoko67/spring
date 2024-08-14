@@ -1,10 +1,13 @@
 package com.rs.product;
 
 
+import com.rs.auth.MetaData;
+import com.rs.user.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -30,11 +33,24 @@ public class ProductController {
 
     @PostMapping("/create")
     @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<Product> createNewProduct(@RequestBody @Valid Product newProductData)
+    public ResponseEntity<?> createNewProduct(@RequestBody @Valid Product newProductData)
     {
-        Product savedProduct = productRepository.save(newProductData);
-        URI newProductURI = URI.create("/product/"+savedProduct.getId());
-        return ResponseEntity.created(newProductURI).body(savedProduct);
+        try {
+            Product savedProduct = productRepository.save(newProductData);
+            URI newProductURI = URI.create("/product/"+savedProduct.getId());
+            MetaData metaData = new MetaData(201, "Success", "Product created successfully");
+            ProductInfo responseData = new ProductInfo(
+                    savedProduct.getName(),
+                    savedProduct.getPrice(),
+                    savedProduct.getPembuat()
+            );
+            ProductResponse apiResponse = new ProductResponse(metaData, responseData);
+            return ResponseEntity.created(newProductURI).body(apiResponse);
+        } catch (Exception e) {
+            MetaData metaData = new MetaData(500, "Gagal", "Internal server error");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @PutMapping("/update/{id}")
