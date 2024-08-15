@@ -37,7 +37,14 @@ public class ProductController {
 
         // Convert Product entities to ProductInfo DTOs
         List<ProductInfo> productInfos = products.stream()
-                .map(p -> new ProductInfo(p.getId(), p.getName(), p.getPrice(), p.getPembuat()))
+                .map(p -> new ProductInfo(
+                        p.getId(),
+                        p.getName(),
+                        p.getPrice(),
+                        p.getPembuat(),
+                        p.getQuantity(),
+                        p.getDiscount(),
+                        p.getAlasan()))
                 .collect(Collectors.toList());
         MetaData metaData = new MetaData(
                 HttpStatus.OK.value(),
@@ -61,7 +68,10 @@ public class ProductController {
                     savedProduct.getId(),
                     savedProduct.getName(),
                     savedProduct.getPrice(),
-                    savedProduct.getPembuat()
+                    savedProduct.getPembuat(),
+                    savedProduct.getQuantity(),
+                    savedProduct.getDiscount(),
+                    savedProduct.getAlasan()
             );
             //ProductResponse apiResponse = new ProductResponse(metaData, Collections.singletonList(responseData)); // Wrap ProductInfo in a List
             ProductResponseData apiResponse = new ProductResponseData(metaData, responseData); // Wrap ProductInfo in a List

@@ -1,9 +1,13 @@
 package com.rs.product;
 
+import com.rs.product.satuan.SatuanProduct;
 import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.*;
 
 
 @Entity
@@ -17,48 +21,36 @@ public class Product
 
     @Column(nullable = false, length = 50)
     @NotNull
-    @Length(min = 5, max = 50)
+    @Length(max = 50)
     private String name;
-
-    /*
-    @Entity
-    @Table(name = "user")
-    public class UserInfo Implements UserDetail
-    {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(nullable = false, length = 50, unique = true)
-    @NotNull
-    @Length(min = 5, max = 50)
-    private String username;
-
-    @Column(nullable = false, length = 50, unique = true)
-    @NotNull
-    @Length(min = 5, max = 50)
-    @Pattern("")
-    private String password;
-    }
-    */
 
     private float price;
 
     @NotNull
-    @Length(min = 5, max = 50)
+    @Length(max = 50)
     private String pembuat;
 
-    public String getPembuat() {
-        return pembuat;
-    }
+    private int quantity;
 
-    public void setPembuat(String pembuat) {
-        this.pembuat = pembuat;
-    }
+    private int discount;
+
+    @NotNull
+    @Length(min = 5, max = 50)
+    private String alasan;
+
 
     public Product()
     {
     }
+
+//    @OneToOne
+//    @JoinTable(
+//            name = "satuan_product",
+//            joinColumns = @JoinColumn(name = "id_satuan")
+//            //inverseJoinColumns = @JoinColumn(name = "")
+//    )
+//
+//    private Set<SatuanProduct> satuanProducts = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -83,4 +75,54 @@ public class Product
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public String getPembuat() {
+        return pembuat;
+    }
+
+    public void setPembuat(String pembuat) {
+        this.pembuat = pembuat;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public String getAlasan() {
+        return alasan;
+    }
+
+    public void setAlasan(String alasan) {
+        this.alasan = alasan;
+    }
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//
+//        for (SatuanProduct satuanProduct : satuanProducts){
+//            authorities.add(new SimpleGrantedAuthority(satuanProduct.getSatuan_product()));
+//        }
+//        return authorities;
+//    }
+
+//    public Set<SatuanProduct> getSatuanProducts() {
+//        return satuanProducts;
+//    }
+//
+//    public void setSatuanProducts(Set<SatuanProduct> satuanProducts) {
+//        this.satuanProducts = satuanProducts;
+//    }
 }
