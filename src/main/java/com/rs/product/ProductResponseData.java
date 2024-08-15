@@ -4,13 +4,13 @@ import com.rs.auth.MetaData;
 
 import java.util.List;
 
-public class ProductResponse {
+public class ProductResponseData {
     private MetaData metaData;
-    private List<ProductInfo> response;
+    private ProductInfo response;
 
     public void ProductResponse() {}
 
-    public ProductResponse(MetaData metaData, List<ProductInfo> response) {
+    public ProductResponseData(MetaData metaData, ProductInfo response) {
         this.metaData = metaData;
         this.response = response;
     }
@@ -23,11 +23,11 @@ public class ProductResponse {
         this.metaData = metaData;
     }
 
-    public List<ProductInfo> getResponse() {
+    public ProductInfo getResponse() {
         return response;
     }
 
-    public void setResponse(List<ProductInfo> response) {
+    public void setResponse(ProductInfo response) {
         this.response = response;
     }
 

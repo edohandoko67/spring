@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -27,8 +31,22 @@ public class ProductController {
 
     @GetMapping("/list")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
-    public List<Product> listAll() {
-        return productRepository.findAll();
+    //public List<Product>
+    public ResponseEntity<ProductResponse> listAll() {
+        List<Product> products = productRepository.findAll();
+
+        // Convert Product entities to ProductInfo DTOs
+        List<ProductInfo> productInfos = products.stream()
+                .map(p -> new ProductInfo(p.getId(), p.getName(), p.getPrice(), p.getPembuat()))
+                .collect(Collectors.toList());
+        MetaData metaData = new MetaData(
+                HttpStatus.OK.value(),
+                "Success",
+                "Products retrieved successfully"
+        );
+        ProductResponse response = new ProductResponse(metaData, productInfos);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+        //return productRepository.findAll();
     }
 
     @PostMapping("/create")
@@ -40,11 +58,13 @@ public class ProductController {
             URI newProductURI = URI.create("/product/"+savedProduct.getId());
             MetaData metaData = new MetaData(201, "Success", "Product created successfully");
             ProductInfo responseData = new ProductInfo(
+                    savedProduct.getId(),
                     savedProduct.getName(),
                     savedProduct.getPrice(),
                     savedProduct.getPembuat()
             );
-            ProductResponse apiResponse = new ProductResponse(metaData, responseData);
+            //ProductResponse apiResponse = new ProductResponse(metaData, Collections.singletonList(responseData)); // Wrap ProductInfo in a List
+            ProductResponseData apiResponse = new ProductResponseData(metaData, responseData); // Wrap ProductInfo in a List
             return ResponseEntity.created(newProductURI).body(apiResponse);
         } catch (Exception e) {
             MetaData metaData = new MetaData(500, "Gagal", "Internal server error");
