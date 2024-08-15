@@ -21,7 +21,7 @@ public class ProductInfo {
     @Length(min = 5, max = 50)
     private String pembuat;
 
-    public void ProductInfo() {}
+    public ProductInfo() {}
 
     public ProductInfo(int id, String name, float price, String pembuat) {
         this.id = id;
