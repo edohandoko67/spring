@@ -43,13 +43,13 @@ public class Product
     {
     }
 
-//    @OneToOne
+//    @ManyToMany
 //    @JoinTable(
 //            name = "satuan_product",
-//            joinColumns = @JoinColumn(name = "id_satuan")
-//            //inverseJoinColumns = @JoinColumn(name = "")
+//            joinColumns = @JoinColumn(name = "id_satuan"),
+//            inverseJoinColumns = @JoinColumn(name = "satuan_product")
 //    )
-//
+
 //    private Set<SatuanProduct> satuanProducts = new HashSet<>();
 
     public Integer getId() {
