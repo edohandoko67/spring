@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,9 +26,9 @@ public class SatuanProduct {
     @Length(max = 50)
     private String kode_product;
 
-    @ManyToMany(mappedBy = "satuanProducts")
-    private Set<Product> products;
-
+    @ManyToOne
+    @JoinColumn(name = "id_product")  // Kolom foreign key di tabel satuan_product
+    private Product product;
 
     public SatuanProduct() {}
 

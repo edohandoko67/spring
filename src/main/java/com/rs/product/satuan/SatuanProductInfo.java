@@ -1,12 +1,11 @@
 package com.rs.product.satuan;
 
+import com.rs.product.Product;
 import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 public class SatuanProductInfo {
     @Id
@@ -22,6 +21,10 @@ public class SatuanProductInfo {
     @NotNull
     @Length(max = 50)
     private String kode_product;
+
+    @ManyToOne
+    @JoinColumn(name = "id_product") // Kolom foreign key di tabel satuan_product
+    private Product product;
 
     public void SatuanProductInfo() {}
 

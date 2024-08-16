@@ -1,26 +1,23 @@
 package com.rs.product;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rs.product.satuan.SatuanProduct;
 import com.sun.istack.NotNull;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.*;
 
 
 @Entity
-@Table(name = "obat")
+@Table(name = "product")
 public class Product
 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id_product;
+
+    private Integer products_satuan;
 
     @Column(nullable = false, length = 50)
     @NotNull
@@ -46,30 +43,33 @@ public class Product
     {
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_satuan", // Nama tabel penghubung
-            joinColumns = @JoinColumn(name = "product_id"), // Kolom foreign key untuk Product
-            inverseJoinColumns = @JoinColumn(name = "satuan_id")  // Kolom foreign key untuk SatuanProduct
-    )
-    private Set<SatuanProduct> satuanProducts;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SatuanProduct> satuanProducts;
 
-    public Set<SatuanProduct> getSatuanProducts() {
+    public List<SatuanProduct> getSatuanProducts() {
         return satuanProducts;
     }
 
-    public void setSatuanProducts(Set<SatuanProduct> satuanProducts) {
+    public void setSatuanProducts(List<SatuanProduct> satuanProducts) {
         this.satuanProducts = satuanProducts;
     }
 
-    public Integer getId() {
-        return id;
+
+    public Integer getId_product() {
+        return id_product;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId_product(Integer id_product) {
+        this.id_product = id_product;
     }
 
+    public Integer getProducts_satuan() {
+        return products_satuan;
+    }
+
+    public void setProducts_satuan(Integer products_satuan) {
+        this.products_satuan = products_satuan;
+    }
 
     public String getName() {
         return name;
