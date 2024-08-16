@@ -1,7 +1,10 @@
 package com.rs.product;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rs.product.satuan.SatuanProduct;
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,14 +46,21 @@ public class Product
     {
     }
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "satuan_product",
-//            joinColumns = @JoinColumn(name = "id_satuan"),
-//            inverseJoinColumns = @JoinColumn(name = "satuan_product")
-//    )
+    @ManyToMany
+    @JoinTable(
+            name = "product_satuan", // Nama tabel penghubung
+            joinColumns = @JoinColumn(name = "product_id"), // Kolom foreign key untuk Product
+            inverseJoinColumns = @JoinColumn(name = "satuan_id")  // Kolom foreign key untuk SatuanProduct
+    )
+    private Set<SatuanProduct> satuanProducts;
 
-//    private Set<SatuanProduct> satuanProducts = new HashSet<>();
+    public Set<SatuanProduct> getSatuanProducts() {
+        return satuanProducts;
+    }
+
+    public void setSatuanProducts(Set<SatuanProduct> satuanProducts) {
+        this.satuanProducts = satuanProducts;
+    }
 
     public Integer getId() {
         return id;
@@ -59,6 +69,7 @@ public class Product
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     public String getName() {
         return name;
@@ -108,21 +119,4 @@ public class Product
         this.alasan = alasan;
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//
-//        for (SatuanProduct satuanProduct : satuanProducts){
-//            authorities.add(new SimpleGrantedAuthority(satuanProduct.getSatuan_product()));
-//        }
-//        return authorities;
-//    }
-
-//    public Set<SatuanProduct> getSatuanProducts() {
-//        return satuanProducts;
-//    }
-//
-//    public void setSatuanProducts(Set<SatuanProduct> satuanProducts) {
-//        this.satuanProducts = satuanProducts;
-//    }
 }

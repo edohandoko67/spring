@@ -44,7 +44,8 @@ public class ProductController {
                         p.getPembuat(),
                         p.getQuantity(),
                         p.getDiscount(),
-                        p.getAlasan()))
+                        p.getAlasan(),
+                        p.getSatuanProducts()))
                 .collect(Collectors.toList());
         MetaData metaData = new MetaData(
                 HttpStatus.OK.value(),
@@ -71,7 +72,8 @@ public class ProductController {
                     savedProduct.getPembuat(),
                     savedProduct.getQuantity(),
                     savedProduct.getDiscount(),
-                    savedProduct.getAlasan()
+                    savedProduct.getAlasan(),
+                    savedProduct.getSatuanProducts()
             );
             //ProductResponse apiResponse = new ProductResponse(metaData, Collections.singletonList(responseData)); // Wrap ProductInfo in a List
             ProductResponseData apiResponse = new ProductResponseData(metaData, responseData); // Wrap ProductInfo in a List

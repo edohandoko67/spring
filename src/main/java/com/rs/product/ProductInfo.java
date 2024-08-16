@@ -1,9 +1,12 @@
 package com.rs.product;
 
+import com.rs.product.satuan.SatuanProduct;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 public class ProductInfo {
     @Id
@@ -27,9 +30,10 @@ public class ProductInfo {
     @Length(min = 5, max = 50)
     private String alasan;
 
+    private Set<SatuanProduct> satuanProducts;
     public ProductInfo() {}
 
-    public ProductInfo(Integer id, String name, float price, String pembuat, @Nullable int quantity, @Nullable int discount, @Nullable String alasan) {
+    public ProductInfo(Integer id, String name, float price, String pembuat, @Nullable int quantity, @Nullable int discount, @Nullable String alasan, Set<SatuanProduct> satuanProducts) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -37,6 +41,15 @@ public class ProductInfo {
         this.quantity = quantity;
         this.discount = discount;
         this.alasan = alasan;
+        this.satuanProducts = satuanProducts;
+    }
+
+    public Set<SatuanProduct> getSatuanProducts() {
+        return satuanProducts;
+    }
+
+    public void setSatuanProducts(Set<SatuanProduct> satuanProducts) {
+        this.satuanProducts = satuanProducts;
     }
 
     public Integer getId() {

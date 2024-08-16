@@ -1,9 +1,12 @@
 package com.rs.product.satuan;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.rs.product.Product;
 import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "satuan_product")
@@ -21,6 +24,10 @@ public class SatuanProduct {
     @NotNull
     @Length(max = 50)
     private String kode_product;
+
+    @ManyToMany(mappedBy = "satuanProducts")
+    private Set<Product> products;
+
 
     public SatuanProduct() {}
 
