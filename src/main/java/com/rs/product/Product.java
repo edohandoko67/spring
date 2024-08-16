@@ -17,7 +17,6 @@ public class Product
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_product;
 
-    private Integer products_satuan;
 
     @Column(nullable = false, length = 50)
     @NotNull
@@ -43,16 +42,16 @@ public class Product
     {
     }
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SatuanProduct> satuanProducts;
-
-    public List<SatuanProduct> getSatuanProducts() {
-        return satuanProducts;
-    }
-
-    public void setSatuanProducts(List<SatuanProduct> satuanProducts) {
-        this.satuanProducts = satuanProducts;
-    }
+//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<SatuanProduct> satuanProducts;
+//
+//    public List<SatuanProduct> getSatuanProducts() {
+//        return satuanProducts;
+//    }
+//
+//    public void setSatuanProducts(List<SatuanProduct> satuanProducts) {
+//        this.satuanProducts = satuanProducts;
+//    }
 
 
     public Integer getId_product() {
@@ -61,14 +60,6 @@ public class Product
 
     public void setId_product(Integer id_product) {
         this.id_product = id_product;
-    }
-
-    public Integer getProducts_satuan() {
-        return products_satuan;
-    }
-
-    public void setProducts_satuan(Integer products_satuan) {
-        this.products_satuan = products_satuan;
     }
 
     public String getName() {

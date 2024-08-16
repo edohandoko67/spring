@@ -12,8 +12,6 @@ public class ProductInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer products_satuan;
-
     @NotNull
     @Length(min = 5, max = 16)
     private String name;
@@ -33,20 +31,20 @@ public class ProductInfo {
 
     //private Set<SatuanProduct> satuanProducts;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SatuanProduct> satuanProducts;
-
-    public List<SatuanProduct> getSatuanProducts() {
-        return satuanProducts;
-    }
-
-    public void setSatuanProducts(List<SatuanProduct> satuanProducts) {
-        this.satuanProducts = satuanProducts;
-    }
+//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<SatuanProduct> satuanProducts;
+//
+//    public List<SatuanProduct> getSatuanProducts() {
+//        return satuanProducts;
+//    }
+//
+//    public void setSatuanProducts(List<SatuanProduct> satuanProducts) {
+//        this.satuanProducts = satuanProducts;
+//    }
 
     public ProductInfo() {}
 
-    public ProductInfo(Integer id, String name, float price, String pembuat, int quantity, int discount, String alasan, int products_satuan) {
+    public ProductInfo(Integer id, String name, float price, String pembuat, int quantity, int discount, String alasan) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -54,7 +52,6 @@ public class ProductInfo {
         this.quantity = quantity;
         this.discount = discount;
         this.alasan = alasan;
-        this.products_satuan = products_satuan;
     }
 
     public Integer getId() {
@@ -63,14 +60,6 @@ public class ProductInfo {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getProducts_satuan() {
-        return products_satuan;
-    }
-
-    public void setProducts_satuan(Integer products_satuan) {
-        this.products_satuan = products_satuan;
     }
 
     public String getName() {
