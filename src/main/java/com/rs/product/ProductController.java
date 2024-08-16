@@ -91,11 +91,49 @@ public class ProductController {
         return ResponseEntity.created(newProductURI).body(savedProduct);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Product> delete(@PathVariable("id") Integer id) {
-        productRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(@RequestBody Product deleteProduct) {
+        try {
+            Integer id = deleteProduct.getId_product();
+            if (productRepository.existsById(id)) {
+                productRepository.deleteById(id);
+                MetaData metaData = new MetaData(200, "Success", "Berhasil menghapus data");
+                return ResponseEntity.ok(metaData);
+            } else {
+                MetaData metaData = new MetaData(404, "Not Found", "Data tidak ditemukan");
+                ErrorResponse errorResponse = new ErrorResponse(metaData);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            }
+           // return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            MetaData metaData = new MetaData(500, "Gagal", "Internal server error");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
+
+    //@DeleteMapping("/delete/{id_product}")
+//    @DeleteMapping("/delete/{id_product}")
+//    public ResponseEntity<?> delete(@PathVariable("id_product") Integer id) {
+//        try {
+//            if (productRepository.existsById(id)) {
+//                productRepository.deleteById(id);
+//                MetaData metaData = new MetaData(200, "Success", "Berhasil menghapus data");
+//                return ResponseEntity.ok(metaData);
+//            } else {
+//                MetaData metaData = new MetaData(404, "Not Found", "Data tidak ditemukan");
+//                ErrorResponse errorResponse = new ErrorResponse(metaData);
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+//            }
+//           // return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            MetaData metaData = new MetaData(500, "Gagal", "Internal server error");
+//            ErrorResponse errorResponse = new ErrorResponse(metaData);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+//        }
+//    }
 
     @GetMapping("{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})

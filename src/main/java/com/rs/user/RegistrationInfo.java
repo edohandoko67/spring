@@ -25,15 +25,20 @@ public class RegistrationInfo {
     @Length(max = 50)
     private String address;
 
+    @NotNull
+    @Length(max = 16)
+    private String number;
+
     public RegistrationInfo() {
 
     }
 
-    public RegistrationInfo(String username, String password, @Nullable String name, @Nullable String address) {
+    public RegistrationInfo(String username, String password, @Nullable String name, @Nullable String address, String number) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.address = address;
+        this.number = number;
     }
 
     public String getUsername() {
@@ -69,5 +74,13 @@ public class RegistrationInfo {
     public void setAddress(@Nullable String address) {
         this.address = address;
 
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

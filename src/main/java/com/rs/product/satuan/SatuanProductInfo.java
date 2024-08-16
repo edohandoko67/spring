@@ -22,9 +22,9 @@ public class SatuanProductInfo {
     @Length(max = 50)
     private String kode_product;
 
-    @ManyToOne
-    @JoinColumn(name = "id_product") // Kolom foreign key di tabel satuan_product
-    private Product product;
+//    @ManyToOne
+//    @JoinColumn(name = "id_product") // Kolom foreign key di tabel satuan_product
+//    private Product product;
 
     public void SatuanProductInfo() {}
 

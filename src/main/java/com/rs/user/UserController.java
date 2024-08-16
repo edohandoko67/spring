@@ -54,7 +54,8 @@ public class UserController {
                     user.getName(),
                     user.getUsername(),
                     role,
-                    accessToken
+                    accessToken,
+                    user.getNumber()
             );
             //LoginResponse loginResponse = new LoginResponse(metaData,user.getUsername(), accessToken, role);
             LoginResponse loginResponse = new LoginResponse(metaData, responseData);
@@ -80,7 +81,8 @@ public class UserController {
                     userInfo.getUsername(),
                     userInfo.getPassword(),
                     userInfo.getName(),
-                    userInfo.getAddress()
+                    userInfo.getAddress(),
+                    userInfo.getNumber()
             );
             RegisterResponse response = new RegisterResponse(metaData, responseData);
             userInfoRepository.save(userInfo);

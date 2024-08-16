@@ -1,16 +1,14 @@
 package com.rs.product;
 
-import com.rs.product.satuan.SatuanProduct;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class ProductInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id_product;
 
     @NotNull
     @Length(min = 5, max = 16)
@@ -44,8 +42,8 @@ public class ProductInfo {
 
     public ProductInfo() {}
 
-    public ProductInfo(Integer id, String name, float price, String pembuat, int quantity, int discount, String alasan) {
-        this.id = id;
+    public ProductInfo(Integer id_product, String name, float price, String pembuat, int quantity, int discount, String alasan) {
+        this.id_product = id_product;
         this.name = name;
         this.price = price;
         this.pembuat = pembuat;
@@ -54,12 +52,12 @@ public class ProductInfo {
         this.alasan = alasan;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getId_product() {
+        return id_product;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId_product(Integer id_product) {
+        this.id_product = id_product;
     }
 
     public String getName() {

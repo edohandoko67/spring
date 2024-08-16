@@ -35,16 +35,22 @@ public class UserInfo implements UserDetails{
     @Nullable
     @Length(max = 50)
     private String address;
+
+    @NotNull
+    @Length(max = 16)
+    private String number;
+
     public UserInfo(){
 
     }
 
-    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address) {
+    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.address = address;
+        this.number = number;
     }
 
     @ManyToMany
@@ -89,6 +95,14 @@ public class UserInfo implements UserDetails{
 
     public void setAddress(@Nullable String address) {
         this.address = address;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override
