@@ -1,13 +1,11 @@
 package com.rs.jadwal;
-import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "jadwal")
-public class Jadwal
+public class JadwalResponse
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +23,7 @@ public class Jadwal
     @Length(min = 8, max = 50)
     private String lokasi_praktik;
 
-    public Jadwal()
+    public JadwalResponse()
     {
 
     }

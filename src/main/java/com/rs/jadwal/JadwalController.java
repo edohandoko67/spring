@@ -1,8 +1,5 @@
 package com.rs.jadwal;
 
-import com.rs.product.Product;
-import com.rs.product.ProductNotFoundException;
-import com.rs.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,22 +19,22 @@ public class JadwalController
 
     @GetMapping("/list")
    // @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
-    public List<Jadwal> listAll() {
+    public List<JadwalResponse> listAll() {
         return jadwalRepository.findAll();
     }
 
     @PostMapping("/create")
     //@RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<Jadwal> createNewJadwal(@RequestBody @Valid Jadwal newJadwalData)
+    public ResponseEntity<JadwalResponse> createNewJadwal(@RequestBody @Valid JadwalResponse newJadwalDataResponse)
     {
-        Jadwal savedJadwal = jadwalRepository.save(newJadwalData);
-        URI newJadwalURI = URI.create("/jadwal/"+savedJadwal.getId());
-        return ResponseEntity.created(newJadwalURI).body(savedJadwal);
+        JadwalResponse savedJadwalResponse = jadwalRepository.save(newJadwalDataResponse);
+        URI newJadwalURI = URI.create("/jadwal/"+ savedJadwalResponse.getId());
+        return ResponseEntity.created(newJadwalURI).body(savedJadwalResponse);
     }
 
     @GetMapping("/name/{name}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
-    public ResponseEntity<Optional<Jadwal>> Name(@PathVariable("name") String name)
+    public ResponseEntity<Optional<JadwalResponse>> Name(@PathVariable("name") String name)
     {
         if (jadwalRepository.findByName(name).isPresent())
         {
@@ -48,14 +45,14 @@ public class JadwalController
 
     @PutMapping("/update/{id}")
     //@RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<Jadwal> updateJadwal(@PathVariable Integer id, @RequestBody Jadwal updatedJadwalData)
+    public ResponseEntity<JadwalResponse> updateJadwal(@PathVariable Integer id, @RequestBody JadwalResponse updatedJadwalDataResponse)
     {
-        Jadwal jadwal = jadwalRepository.findById(id).orElseThrow(() -> new JadwalNotFoundException("Jadwal not exist with id: " +id));
-        jadwal.setName(updatedJadwalData.getName());
-        jadwal.setHari_praktik(updatedJadwalData.getHari_praktik());
-        jadwal.setLokasi_praktik(updatedJadwalData.getLokasi_praktik());
-        Jadwal savedJadwal = jadwalRepository.save(jadwal);
-        URI newJadwalURI = URI.create("/jadwal/"+savedJadwal.getId());
-        return ResponseEntity.created(newJadwalURI).body(savedJadwal);
+        JadwalResponse jadwalResponse = jadwalRepository.findById(id).orElseThrow(() -> new JadwalNotFoundException("Jadwal not exist with id: " +id));
+        jadwalResponse.setName(updatedJadwalDataResponse.getName());
+        jadwalResponse.setHari_praktik(updatedJadwalDataResponse.getHari_praktik());
+        jadwalResponse.setLokasi_praktik(updatedJadwalDataResponse.getLokasi_praktik());
+        JadwalResponse savedJadwalResponse = jadwalRepository.save(jadwalResponse);
+        URI newJadwalURI = URI.create("/jadwal/"+ savedJadwalResponse.getId());
+        return ResponseEntity.created(newJadwalURI).body(savedJadwalResponse);
     }
 }
