@@ -1,6 +1,9 @@
 package com.rs.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,12 +16,21 @@ public class LoginInfo {
     @Length(min = 8, max = 16)
     private String password;
 
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Length(max = 16)
+    @Nullable
     private String number;
     private String accessToken;
     private String role;
 
-    public LoginInfo(String username, String password, String role, String accessToken, String number) {
+//    public LoginInfo(String username, String password, String accessToken, String role) {
+//        this.username = username;
+//        this.password = password;
+//        this.accessToken = accessToken;
+//        this.role = role;
+//    }
+
+    public LoginInfo(String username, String password, String role, String accessToken, @Nullable String number) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -46,7 +58,7 @@ public class LoginInfo {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(@Nullable String number) {
         this.number = number;
     }
 

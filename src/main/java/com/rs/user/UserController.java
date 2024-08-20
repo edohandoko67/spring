@@ -52,7 +52,7 @@ public class UserController {
             MetaData metaData = new MetaData(200, "success", "Selamat Datang" + " " + user.getName());
             LoginInfo responseData = new LoginInfo(
                     user.getName(),
-                    user.getUsername(),
+                    user.getPassword(),
                     role,
                     accessToken,
                     user.getNumber()
@@ -76,6 +76,7 @@ public class UserController {
             userInfo.setAddress(registrationInfo.getAddress());
             userInfo.setName(registrationInfo.getName());
             userInfo.addRole(new Role(1));
+            userInfo.setNumber(registrationInfo.getNumber());
             MetaData metaData = new MetaData(201, "success", "Berhasil mendaftar");
             RegistrationInfo responseData = new RegistrationInfo(
                     userInfo.getUsername(),
