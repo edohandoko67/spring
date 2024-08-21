@@ -4,11 +4,11 @@ import com.rs.auth.MetaData;
 
 public class JadwalTokoSalesResponse {
     private MetaData metaData;
-    private JadwalTokoSales responseToko;
+    private JadwalTokoSales response;
 
-    public JadwalTokoSalesResponse(MetaData metaData, JadwalTokoSales responseToko) {
+    public JadwalTokoSalesResponse(MetaData metaData, JadwalTokoSales response) {
         this.metaData = metaData;
-        this.responseToko = responseToko;
+        this.response = response;
     }
 
     public MetaData getMetaData() {
@@ -19,11 +19,11 @@ public class JadwalTokoSalesResponse {
         this.metaData = metaData;
     }
 
-    public JadwalTokoSales getResponseToko() {
-        return responseToko;
+    public JadwalTokoSales getResponse() {
+        return response;
     }
 
-    public void setResponseToko(JadwalTokoSales responseToko) {
-        this.responseToko = responseToko;
+    public void setResponse(JadwalTokoSales response) {
+        this.response = response;
     }
 }
