@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
+import javax.imageio.ImageIO;
 import javax.validation.constraints.NotNull;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/Toko")
@@ -22,6 +25,7 @@ public class JadwalTokoSalesController {
 
     @Autowired
     JadwalTokoSalesRepository jadwalTokoSalesRepository;
+    String imageDirectory = "src/main/resources/static/path/image/";
 
     @PostMapping("/create")
     @RolesAllowed("ROLE_ADMIN")
@@ -38,20 +42,40 @@ public class JadwalTokoSalesController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
 
-            byte[] imageBytes = image.getBytes();
+            //memeriksa apakah folder sudah ada, jika belum mkdir akan create
+            File directory = new File(imageDirectory);
+            if (!directory.exists()) {
+                boolean created = directory.mkdirs(); // Create directories if they don't exist
+                if (!created) {
+                    throw new RuntimeException("Failed to create directory: " + imageDirectory);
+                }
+            }
+            // Convert MultipartFile to BufferedImage
+            BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+
+            // Define the file path and name
+            String fileName = "image_" + System.currentTimeMillis() + ".png";
+            File file = new File(imageDirectory + fileName);
+
+            // Write the BufferedImage to file in PNG format
+            ImageIO.write(bufferedImage, "png", file);
+
+            // Generate a URL or path to access the image
+            String imageUrl = "path/image/" + fileName; // Adjust URL according to your setup
             JadwalTokoSales jadwalTokoSales = new JadwalTokoSales();
             jadwalTokoSales.setName_toko(nameToko);
             jadwalTokoSales.setAddress(address);
-            jadwalTokoSales.setImage(Arrays.toString(imageBytes)); //convert to array
+            jadwalTokoSales.setImage(imageUrl); //convert to array
+
             JadwalTokoSales savedJadwalToko = jadwalTokoSalesRepository.save(jadwalTokoSales);
             URI newJadwalTokoURI = URI.create("/Toko/"+savedJadwalToko.getJadwalToko_id());
             MetaData metaData = new MetaData(201, "Berhasil", "Berhasil menambah data");
-            Base64.getEncoder().encodeToString(imageBytes); //convert to base64
+
             JadwalTokoSales response = new JadwalTokoSales(
                     savedJadwalToko.getJadwalToko_id(),
                     savedJadwalToko.getName_toko(),
                     savedJadwalToko.getAddress(),
-                    Arrays.toString(imageBytes)
+                    savedJadwalToko.getImage()
             );
             JadwalTokoSalesResponse apiResponse = new JadwalTokoSalesResponse(metaData, response);
             return ResponseEntity.created(newJadwalTokoURI).body(apiResponse);
@@ -67,13 +91,16 @@ public class JadwalTokoSalesController {
         List<JadwalTokoSales> jadwalTokoSalesList = jadwalTokoSalesRepository.findAll();
         List<JadwalTokoSalesInfo> jadwalTokoSalesInfo = jadwalTokoSalesList.stream()
                 .map(p -> {
-                    byte[] imageBytes = p.getImage().getBytes();
-                    String base64 = Base64.getEncoder().encodeToString(imageBytes);
+                    // Define the file path and name
+                    String fileName = "image_" + System.currentTimeMillis() + ".png";
+
+                    // Generate a URL or path to access the image
+                    String imageUrl = "path/image/" + fileName; // Adjust URL according to your setup
                     return new JadwalTokoSalesInfo(
                             p.getJadwalToko_id(),
                             p.getName_toko(),
                             p.getAddress(),
-                            Arrays.toString(imageBytes)
+                            p.getImage()
                     );
                 })
                 .collect(Collectors.toList());

@@ -6,11 +6,11 @@ import java.util.List;
 
 public class ResponseToko {
     private MetaData metaData;
-    private List<JadwalTokoSalesInfo> responseToko;
+    private List<JadwalTokoSalesInfo> response;
 
-    public ResponseToko(MetaData metaData, List<JadwalTokoSalesInfo> responseToko) {
+    public ResponseToko(MetaData metaData, List<JadwalTokoSalesInfo> response) {
         this.metaData = metaData;
-        this.responseToko = responseToko;
+        this.response = response;
     }
 
     public MetaData getMetaData() {
@@ -21,11 +21,11 @@ public class ResponseToko {
         this.metaData = metaData;
     }
 
-    public List<JadwalTokoSalesInfo> getResponseToko() {
-        return responseToko;
+    public List<JadwalTokoSalesInfo> getResponse() {
+        return response;
     }
 
-    public void setResponseToko(List<JadwalTokoSalesInfo> responseToko) {
-        this.responseToko = responseToko;
+    public void setResponse(List<JadwalTokoSalesInfo> response) {
+        this.response = response;
     }
 }

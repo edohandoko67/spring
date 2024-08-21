@@ -1,6 +1,7 @@
 package com.rs.user.toko;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 public class JadwalTokoSalesInfo {
     @Id
@@ -58,13 +59,13 @@ public class JadwalTokoSalesInfo {
         this.image = image;
     }
 
-//    @Override
-//    public String toString() {
-//        return "JadwalTokoSales{" +
-//                "jadwalTokoId=" + jadwalToko_id +
-//                ", nameToko='" + name_toko + '\'' +
-//                ", address='" + address + '\'' +
-//                ", image=" + Arrays.toString(image) +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "JadwalTokoSales{" +
+                "jadwalTokoId=" + jadwalToko_id +
+                ", nameToko='" + name_toko + '\'' +
+                ", address='" + address + '\'' +
+                ", image=" + image + '\'' +
+                '}';
+    }
 }
