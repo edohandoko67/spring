@@ -1,6 +1,8 @@
 package com.rs.user.toko;
 
 import com.rs.auth.MetaData;
+import com.rs.product.Product;
+import com.rs.product.ProductNotFoundException;
 import com.rs.user.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +35,14 @@ public class JadwalTokoSalesController {
     public ResponseEntity<?> create(
             @RequestParam("name_toko") @NotNull String nameToko,
             @RequestParam("address") @NotNull String address,
-            @RequestParam("image") @NotNull MultipartFile image
+            @RequestParam("image") @NotNull MultipartFile image,
+            @RequestParam("nomor_so") @NotNull String nomer_so,
+            @RequestParam("provinsi") @NotNull String provinsi,
+            @RequestParam("kota") @NotNull String kota,
+            @RequestParam("kecamatan") @NotNull String kecamatan,
+            @RequestParam("desa") @NotNull String desa,
+            @RequestParam("owner") @NotNull String owner,
+            @RequestParam("no_hp") @NotNull String no_hp
             ) {
         try {
             // Validasi ukuran file jika diperlukan
@@ -65,7 +75,14 @@ public class JadwalTokoSalesController {
             JadwalTokoSales jadwalTokoSales = new JadwalTokoSales();
             jadwalTokoSales.setName_toko(nameToko);
             jadwalTokoSales.setAddress(address);
-            jadwalTokoSales.setImage(imageUrl); //convert to array
+            jadwalTokoSales.setImage(imageUrl);//convert to array
+            jadwalTokoSales.setProvinsi(provinsi);
+            jadwalTokoSales.setNomer_so(nomer_so);
+            jadwalTokoSales.setKota(kota);
+            jadwalTokoSales.setKecamatan(kecamatan);
+            jadwalTokoSales.setDesa(desa);
+            jadwalTokoSales.setNamaOwner(owner);
+            jadwalTokoSales.setNumber(no_hp);
 
             JadwalTokoSales savedJadwalToko = jadwalTokoSalesRepository.save(jadwalTokoSales);
             URI newJadwalTokoURI = URI.create("/Toko/"+savedJadwalToko.getJadwalToko_id());
@@ -75,6 +92,13 @@ public class JadwalTokoSalesController {
                     savedJadwalToko.getJadwalToko_id(),
                     savedJadwalToko.getName_toko(),
                     savedJadwalToko.getAddress(),
+                    savedJadwalToko.getNomer_so(),
+                    savedJadwalToko.getProvinsi(),
+                    savedJadwalToko.getKota(),
+                    savedJadwalToko.getKecamatan(),
+                    savedJadwalToko.getDesa(),
+                    savedJadwalToko.getNamaOwner(),
+                    savedJadwalToko.getNumber(),
                     savedJadwalToko.getImage()
             );
             JadwalTokoSalesResponse apiResponse = new JadwalTokoSalesResponse(metaData, response);
@@ -100,6 +124,13 @@ public class JadwalTokoSalesController {
                             p.getJadwalToko_id(),
                             p.getName_toko(),
                             p.getAddress(),
+                            p.getNomer_so(),
+                            p.getProvinsi(),
+                            p.getKota(),
+                            p.getKecamatan(),
+                            p.getDesa(),
+                            p.getNamaOwner(),
+                            p.getNumber(),
                             p.getImage()
                     );
                 })
@@ -109,5 +140,17 @@ public class JadwalTokoSalesController {
         );
         ResponseToko apiRespinse = new ResponseToko(metaData, jadwalTokoSalesInfo);
         return new ResponseEntity<>(apiRespinse, HttpStatus.OK);
+    }
+
+    @GetMapping("/{jadwal_toko_id}")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    public ResponseEntity<?> getTokoById(@PathVariable("jadwal_toko_id") Integer id) {
+        Optional<JadwalTokoSales> tokoOptional = jadwalTokoSalesRepository.findById(id);
+        if (tokoOptional.isPresent()) {
+            return ResponseEntity.ok(tokoOptional.get());
+        }
+        MetaData metaData = new MetaData(404, "error", "Data tidak ditemukan");
+        ErrorResponse errorResponse = new ErrorResponse(metaData);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }
