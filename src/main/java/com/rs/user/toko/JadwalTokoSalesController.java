@@ -170,6 +170,29 @@ public class JadwalTokoSalesController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @PutMapping("/update/{id}")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    public ResponseEntity<?> updateTokoById(@PathVariable Integer id, @RequestBody JadwalTokoSales updated) {
+        try{
+            JadwalTokoSales jadwalTokoSales = jadwalTokoSalesRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not exist with id: " +id));
+            jadwalTokoSales.setAddress(updated.getAddress());
+            jadwalTokoSales.setNumber(updated.getNumber());
+            jadwalTokoSales.setKota(updated.getKota());
+            jadwalTokoSales.setKecamatan(updated.getKecamatan());
+            jadwalTokoSales.setNomer_so(updated.getNomer_so());
+            jadwalTokoSales.setDesa(updated.getDesa());
+            jadwalTokoSales.setName_toko(updated.getName_toko());
+            JadwalTokoSales savedJadwalTokoSales = jadwalTokoSalesRepository.save(jadwalTokoSales);
+            URI newJadwalTokoSalesURI = URI.create("/Toko/"+savedJadwalTokoSales.getJadwalToko_id());
+            return ResponseEntity.created(newJadwalTokoSalesURI).body(savedJadwalTokoSales);
+        } catch (Exception e) {
+            MetaData metaData = new MetaData(500, "error", "Internal server error");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+
+    }
+
     private void createDirectoryIfNotExists(String directoryPath) {
         File directory = new File(directoryPath);
         if (!directory.exists()) {
