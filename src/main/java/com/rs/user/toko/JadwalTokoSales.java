@@ -41,9 +41,13 @@ public class JadwalTokoSales {
     @Column(name = "image")
     private String image; // Untuk menyimpan gambar dalam bentuk byte array
 
+    @Lob
+    @Column(name = "image_detail")
+    private String imageDetail;
+
     public JadwalTokoSales() {}
 
-    public JadwalTokoSales(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image) {
+    public JadwalTokoSales(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image, String imageDetail) {
         this.jadwalToko_id = jadwalToko_id;
         this.name_toko = name_toko;
         this.address = address;
@@ -55,6 +59,7 @@ public class JadwalTokoSales {
         this.namaOwner = namaOwner;
         this.number = number;
         this.image = image;
+        this.imageDetail = imageDetail;
     }
 
     public String getNomer_so() {
@@ -63,6 +68,14 @@ public class JadwalTokoSales {
 
     public void setNomer_so(String nomer_so) {
         this.nomer_so = nomer_so;
+    }
+
+    public String getImageDetail() {
+        return imageDetail;
+    }
+
+    public void setImageDetail(String imageDetail) {
+        this.imageDetail = imageDetail;
     }
 
     public int getJadwalToko_id() {

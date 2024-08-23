@@ -28,7 +28,8 @@ public class JadwalTokoSalesController {
 
     @Autowired
     JadwalTokoSalesRepository jadwalTokoSalesRepository;
-    String imageDirectory = "src/main/resources/static/path/image/";
+    private static final String IMAGE_DIRECTORY = "src/main/resources/static/path/image/";
+    private static final String IMAGE_DETAIL_DIRECTORY = "src/main/resources/static/path/image_detail/";
 
     @PostMapping("/create")
     @RolesAllowed("ROLE_ADMIN")
@@ -42,40 +43,48 @@ public class JadwalTokoSalesController {
             @RequestParam("kecamatan") @NotNull String kecamatan,
             @RequestParam("desa") @NotNull String desa,
             @RequestParam("owner") @NotNull String owner,
-            @RequestParam("no_hp") @NotNull String no_hp
+            @RequestParam("no_hp") @NotNull String no_hp,
+            @RequestParam("image_detail") @NotNull MultipartFile image_detail
             ) {
         try {
-            // Validasi ukuran file jika diperlukan
+            // Validate file sizes
             if (image.getSize() > 5_000_000) { // 5 MB limit
-                MetaData metaData = new MetaData(400, "error", "File size exceeds limit");
+                MetaData metaData = new MetaData(400, "error", "Image file size exceeds limit");
                 ErrorResponse errorResponse = new ErrorResponse(metaData);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
 
-            //memeriksa apakah folder sudah ada, jika belum mkdir akan create
-            File directory = new File(imageDirectory);
-            if (!directory.exists()) {
-                boolean created = directory.mkdirs(); // Create directories if they don't exist
-                if (!created) {
-                    throw new RuntimeException("Failed to create directory: " + imageDirectory);
-                }
+            if (image_detail.getSize() > 5_000_000) { // 5 MB limit
+                MetaData metaData = new MetaData(400, "error", "Detail image file size exceeds limit");
+                ErrorResponse errorResponse = new ErrorResponse(metaData);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
-            // Convert MultipartFile to BufferedImage
+
+            // Ensure directories exist
+            createDirectoryIfNotExists(IMAGE_DIRECTORY);
+            createDirectoryIfNotExists(IMAGE_DETAIL_DIRECTORY);
+
+            // Handle image upload
+            String imageFileName = "image_" + System.currentTimeMillis() + ".png";
+            File imageFile = new File(IMAGE_DIRECTORY + imageFileName);
             BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+            ImageIO.write(bufferedImage, "png", imageFile);
 
-            // Define the file path and name
-            String fileName = "image_" + System.currentTimeMillis() + ".png";
-            File file = new File(imageDirectory + fileName);
+            // Handle detail image upload
+            String imageDetailFileName = "detail_" + System.currentTimeMillis() + ".png";
+            File imageDetailFile = new File(IMAGE_DETAIL_DIRECTORY + imageDetailFileName);
+            BufferedImage bufferedImageDetail = ImageIO.read(image_detail.getInputStream());
+            ImageIO.write(bufferedImageDetail, "png", imageDetailFile);
 
-            // Write the BufferedImage to file in PNG format
-            ImageIO.write(bufferedImage, "png", file);
+            // Generate URLs or paths to access the images
+            String imageUrl = "path/image/" + imageFileName;
+            String imageDetailUrl = "path/image_detail/" + imageDetailFileName;
 
-            // Generate a URL or path to access the image
-            String imageUrl = "path/image/" + fileName; // Adjust URL according to your setup
+            // Create and save the Toko entity
             JadwalTokoSales jadwalTokoSales = new JadwalTokoSales();
             jadwalTokoSales.setName_toko(nameToko);
             jadwalTokoSales.setAddress(address);
-            jadwalTokoSales.setImage(imageUrl);//convert to array
+            jadwalTokoSales.setImage(imageUrl);
             jadwalTokoSales.setProvinsi(provinsi);
             jadwalTokoSales.setNomer_so(nomer_so);
             jadwalTokoSales.setKota(kota);
@@ -83,11 +92,12 @@ public class JadwalTokoSalesController {
             jadwalTokoSales.setDesa(desa);
             jadwalTokoSales.setNamaOwner(owner);
             jadwalTokoSales.setNumber(no_hp);
+            jadwalTokoSales.setImageDetail(imageDetailUrl);
 
             JadwalTokoSales savedJadwalToko = jadwalTokoSalesRepository.save(jadwalTokoSales);
-            URI newJadwalTokoURI = URI.create("/Toko/"+savedJadwalToko.getJadwalToko_id());
-            MetaData metaData = new MetaData(201, "Berhasil", "Berhasil menambah data");
+            URI newJadwalTokoURI = URI.create("/Toko/" + savedJadwalToko.getJadwalToko_id());
 
+            MetaData metaData = new MetaData(201, "success", "Successfully added data");
             JadwalTokoSales response = new JadwalTokoSales(
                     savedJadwalToko.getJadwalToko_id(),
                     savedJadwalToko.getName_toko(),
@@ -99,10 +109,15 @@ public class JadwalTokoSalesController {
                     savedJadwalToko.getDesa(),
                     savedJadwalToko.getNamaOwner(),
                     savedJadwalToko.getNumber(),
-                    savedJadwalToko.getImage()
+                    savedJadwalToko.getImage(),
+                    savedJadwalToko.getImageDetail()
             );
             JadwalTokoSalesResponse apiResponse = new JadwalTokoSalesResponse(metaData, response);
             return ResponseEntity.created(newJadwalTokoURI).body(apiResponse);
+        } catch (IOException e) {
+            MetaData metaData = new MetaData(500, "error", "Internal server error");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         } catch (Exception e) {
             MetaData metaData = new MetaData(500, "error", "Internal server error");
             ErrorResponse errorResponse = new ErrorResponse(metaData);
@@ -131,7 +146,8 @@ public class JadwalTokoSalesController {
                             p.getDesa(),
                             p.getNamaOwner(),
                             p.getNumber(),
-                            p.getImage()
+                            p.getImage(),
+                            p.getImageDetail()
                     );
                 })
                 .collect(Collectors.toList());
@@ -152,5 +168,15 @@ public class JadwalTokoSalesController {
         MetaData metaData = new MetaData(404, "error", "Data tidak ditemukan");
         ErrorResponse errorResponse = new ErrorResponse(metaData);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    private void createDirectoryIfNotExists(String directoryPath) {
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs(); // Create directories if they don't exist
+            if (!created) {
+                throw new RuntimeException("Failed to create directory: " + directoryPath);
+            }
+        }
     }
 }

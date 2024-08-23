@@ -39,9 +39,14 @@ public class JadwalTokoSalesInfo {
     @Column(name = "image")
     private String image; // Untuk menyimpan gambar dalam bentuk byte array
 
+
+    @Lob
+    @Column(name = "image_detail")
+    private String imageDetail; // Untuk menyimpan gambar dalam bentuk byte array
+
     public JadwalTokoSalesInfo() {}
 
-    public JadwalTokoSalesInfo(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image) {
+    public JadwalTokoSalesInfo(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image, String imageDetail) {
         this.jadwalToko_id = jadwalToko_id;
         this.name_toko = name_toko;
         this.address = address;
@@ -53,6 +58,7 @@ public class JadwalTokoSalesInfo {
         this.namaOwner = namaOwner;
         this.number = number;
         this.image = image;
+        this.imageDetail = imageDetail;
     }
 
     public String getNomer_so() {
@@ -142,7 +148,16 @@ public class JadwalTokoSalesInfo {
     public void setNumber(String number) {
         this.number = number;
     }
-//    @Override
+
+    public String getImageDetail() {
+        return imageDetail;
+    }
+
+    public void setImageDetail(String imageDetail) {
+        this.imageDetail = imageDetail;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "JadwalTokoSales{" +
 //                "jadwalTokoId=" + jadwalToko_id +
@@ -159,6 +174,7 @@ public class JadwalTokoSalesInfo {
                 ", nameToko='" + name_toko + '\'' +
                 ", address='" + address + '\'' +
                 ", image=" + image + '\'' +
+                ", image_detail=" + imageDetail + '\'' +
                 '}';
     }
 }
