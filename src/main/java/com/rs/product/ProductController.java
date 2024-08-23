@@ -3,6 +3,8 @@ package com.rs.product;
 
 import com.rs.auth.MetaData;
 import com.rs.user.ErrorResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,12 +29,14 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
+
     @GetMapping("/list")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
     //public List<Product>
     public ResponseEntity<ProductResponse> listAll() {
         List<Product> products = productRepository.findAll();
-
         // Convert Product entities to ProductInfo DTOs
         List<ProductInfo> productInfos = products.stream()
                 .map(p -> new ProductInfo(
@@ -50,6 +56,50 @@ public class ProductController {
         ProductResponse response = new ProductResponse(metaData, productInfos);
         return new ResponseEntity<>(response, HttpStatus.OK);
         //return productRepository.findAll();
+    }
+
+    @GetMapping("/list_date")
+    @ResponseBody
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    //public List<Product>
+    public ResponseEntity<?> getDataByDate(
+            @RequestParam(value = "nomer_so", required = false) String nomer_so,
+            @RequestParam(value = "created_date", required = false) String createdDateStr) {
+        try {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+            // Mengonversi string tanggal ke LocalDateTime
+            LocalDate createdDate = LocalDate.parse(createdDateStr, formatter);
+
+            List<Product> products = productRepository.findProductsByTokoNomerSo(nomer_so, createdDate);
+
+            logger.debug("Products retrieved: {}", products);
+            // Convert Product entities to ProductInfo DTOs
+            List<ProductInfo> productInfos = products.stream()
+                    .map(p -> new ProductInfo(
+                            p.getId_product(),
+                            p.getName(),
+                            p.getPrice(),
+                            p.getPembuat(),
+                            p.getQuantity(),
+                            p.getDiscount(),
+                            p.getAlasan()))
+                    .collect(Collectors.toList());
+            MetaData metaData = new MetaData(
+                    HttpStatus.OK.value(),
+                    "Success",
+                    "Products retrieved successfully"
+            );
+            ProductResponse response = new ProductResponse(metaData, productInfos);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+            //return productRepository.findAll();
+        } catch (Exception e) {
+            MetaData metaData = new MetaData(400, "Error", "Bad Request");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
     }
 
     @PostMapping("/create")

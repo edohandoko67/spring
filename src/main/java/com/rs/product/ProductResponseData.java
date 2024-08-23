@@ -12,6 +12,7 @@ public class ProductResponseData {
     private MetaData metaData;
     private ProductInfo response;
 
+
 //    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<SatuanProduct> satuanProducts;
 //

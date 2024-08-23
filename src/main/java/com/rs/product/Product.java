@@ -1,10 +1,13 @@
 package com.rs.product;
 
-import com.rs.product.satuan.SatuanProduct;
+import com.rs.user.toko.JadwalTokoSales;
 import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -37,9 +40,28 @@ public class Product
     @Length(min = 5, max = 50)
     private String alasan;
 
+    @Column(name = "createdAt")
+    @CreatedDate
+    private LocalDate createdDate;
+
+    @ManyToOne
+    private JadwalTokoSales jadwalTokoSales; // Ini harus sesuai dengan `mappedBy` di kelas Toko
+
+    public JadwalTokoSales getJadwalTokoSales() {
+        return jadwalTokoSales;
+    }
+
+    public void setJadwalTokoSales(JadwalTokoSales jadwalTokoSales) {
+        this.jadwalTokoSales = jadwalTokoSales;
+    }
 
     public Product()
     {
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDate.now();
     }
 
 //    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -110,4 +132,11 @@ public class Product
         this.alasan = alasan;
     }
 
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
 }

@@ -1,9 +1,14 @@
 package com.rs.product;
 
+import com.rs.user.toko.JadwalTokoSales;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ProductInfo {
     @Id
@@ -27,6 +32,21 @@ public class ProductInfo {
     @Length(min = 5, max = 50)
     private String alasan;
 
+    @Column(name = "createdAt")
+    @CreatedDate
+    private LocalDate createdDate;
+
+    @ManyToOne
+    private JadwalTokoSales jadwalTokoSales;
+
+    public JadwalTokoSales getJadwalTokoSales() {
+        return jadwalTokoSales;
+    }
+
+    public void setJadwalTokoSales(JadwalTokoSales jadwalTokoSales) {
+        this.jadwalTokoSales = jadwalTokoSales;
+    }
+
     //private Set<SatuanProduct> satuanProducts;
 
 //    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -41,6 +61,11 @@ public class ProductInfo {
 //    }
 
     public ProductInfo() {}
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 
     public ProductInfo(Integer id_product, String name, float price, String pembuat, int quantity, int discount, String alasan) {
         this.id_product = id_product;
@@ -106,5 +131,13 @@ public class ProductInfo {
 
     public void setAlasan(String alasan) {
         this.alasan = alasan;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 }

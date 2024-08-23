@@ -2,6 +2,7 @@ package com.rs.user.toko;
 
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.Set;
 
 public class JadwalTokoSalesInfo {
     @Id
@@ -43,6 +44,19 @@ public class JadwalTokoSalesInfo {
     @Lob
     @Column(name = "image_detail")
     private String imageDetail; // Untuk menyimpan gambar dalam bentuk byte array
+
+
+    @OneToMany(mappedBy = "jadwalTokoSales")
+    private Set<JadwalTokoSales> jadwalTokoSales;
+
+    public Set<JadwalTokoSales> getJadwalTokoSales() {
+        return jadwalTokoSales;
+    }
+
+    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
+        this.jadwalTokoSales = jadwalTokoSales;
+    }
+
 
     public JadwalTokoSalesInfo() {}
 

@@ -1,6 +1,7 @@
 package com.rs.user.toko;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Toko")
@@ -44,6 +45,17 @@ public class JadwalTokoSales {
     @Lob
     @Column(name = "image_detail")
     private String imageDetail;
+
+    @OneToMany(mappedBy = "jadwalTokoSales")
+    private Set<JadwalTokoSales> jadwalTokoSales;
+
+    public Set<JadwalTokoSales> getJadwalTokoSales() {
+        return jadwalTokoSales;
+    }
+
+    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
+        this.jadwalTokoSales = jadwalTokoSales;
+    }
 
     public JadwalTokoSales() {}
 
