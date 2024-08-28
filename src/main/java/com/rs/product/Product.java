@@ -18,6 +18,7 @@ public class Product
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_product")
     private Integer id_product;
 
 
@@ -43,6 +44,10 @@ public class Product
     @Column(name = "createdAt")
     @CreatedDate
     private LocalDate createdDate;
+
+    @Lob
+    @Column(name = "image_product")
+    private String image_product;
 
     @ManyToOne
     private JadwalTokoSales jadwalTokoSales; // Ini harus sesuai dengan `mappedBy` di kelas Toko
@@ -138,5 +143,13 @@ public class Product
 
     public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getImage_product() {
+        return image_product;
+    }
+
+    public void setImage_product(String image_product) {
+        this.image_product = image_product;
     }
 }

@@ -32,6 +32,9 @@ public class ProductInfo {
     @Length(min = 5, max = 50)
     private String alasan;
 
+    @Lob
+    private String image_product;
+
     @Column(name = "createdAt")
     @CreatedDate
     private LocalDate createdDate;
@@ -67,7 +70,8 @@ public class ProductInfo {
         this.createdDate = LocalDate.now();
     }
 
-    public ProductInfo(Integer id_product, String name, float price, String pembuat, int quantity, int discount, String alasan) {
+
+    public ProductInfo(Integer id_product, String name, float price, String pembuat, int quantity, int discount, String alasan, String image_product, LocalDate createdDate) {
         this.id_product = id_product;
         this.name = name;
         this.price = price;
@@ -75,6 +79,8 @@ public class ProductInfo {
         this.quantity = quantity;
         this.discount = discount;
         this.alasan = alasan;
+        this.image_product = image_product;
+        this.createdDate = createdDate;
     }
 
     public Integer getId_product() {
@@ -139,5 +145,13 @@ public class ProductInfo {
 
     public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getImage_product() {
+        return image_product;
+    }
+
+    public void setImage_product(String image_product) {
+        this.image_product = image_product;
     }
 }

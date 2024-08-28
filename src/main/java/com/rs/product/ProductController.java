@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
+import javax.imageio.ImageIO;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
+
 
 
 @RestController
@@ -46,7 +51,9 @@ public class ProductController {
                         p.getPembuat(),
                         p.getQuantity(),
                         p.getDiscount(),
-                        p.getAlasan()))
+                        p.getAlasan(),
+                        p.getImage_product(),
+                        p.getCreatedDate()))
                 .collect(Collectors.toList());
         MetaData metaData = new MetaData(
                 HttpStatus.OK.value(),
@@ -84,7 +91,9 @@ public class ProductController {
                             p.getPembuat(),
                             p.getQuantity(),
                             p.getDiscount(),
-                            p.getAlasan()))
+                            p.getAlasan(),
+                            p.getImage_product(),
+                            p.getCreatedDate()))
                     .collect(Collectors.toList());
             MetaData metaData = new MetaData(
                     HttpStatus.OK.value(),
@@ -102,13 +111,27 @@ public class ProductController {
 
     }
 
+    private static final String IMAGE_DIRECTORYS = "src/main/resources/static/path/image_product/";
+
     @PostMapping("/create")
     @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<?> createNewProduct(@RequestBody @Valid Product newProductData)
+    public ResponseEntity<?> createNewProduct(
+            @Valid Product newProductData,
+            @RequestParam("image") MultipartFile imageFile)
     {
         try {
+
+            createDirectoryIfNotExists(IMAGE_DIRECTORYS);
+            String imageFileName = "image_" + System.currentTimeMillis() + ".png";
+            File imageFiles = new File(IMAGE_DIRECTORYS + imageFileName);
+            BufferedImage bufferedImage = ImageIO.read(imageFile.getInputStream());
+            ImageIO.write(bufferedImage, "png", imageFiles);
+
+            String image_product = "path/image_product/" + imageFileName;
+
+            newProductData.setImage_product(image_product);
             Product savedProduct = productRepository.save(newProductData);
-            URI newProductURI = URI.create("/product/"+savedProduct.getId_product());
+            URI newProductURI = URI.create("/product/" + savedProduct.getId_product());
             MetaData metaData = new MetaData(201, "Success", "Product created successfully");
             ProductInfo responseData = new ProductInfo(
                     savedProduct.getId_product(),
@@ -117,10 +140,11 @@ public class ProductController {
                     savedProduct.getPembuat(),
                     savedProduct.getQuantity(),
                     savedProduct.getDiscount(),
-                    savedProduct.getAlasan()
+                    savedProduct.getAlasan(),
+                    savedProduct.getImage_product(),
+                    savedProduct.getCreatedDate()
             );
-            //ProductResponse apiResponse = new ProductResponse(metaData, Collections.singletonList(responseData)); // Wrap ProductInfo in a List
-            ProductResponseData apiResponse = new ProductResponseData(metaData, responseData); // Wrap ProductInfo in a List
+            ProductResponseData apiResponse = new ProductResponseData(metaData, responseData);
             return ResponseEntity.created(newProductURI).body(apiResponse);
         } catch (Exception e) {
             MetaData metaData = new MetaData(500, "Gagal", "Internal server error");
@@ -201,6 +225,16 @@ public class ProductController {
             return ResponseEntity.ok(productRepository.findByName(name));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private void createDirectoryIfNotExists(String directoryPath) {
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs(); // Create directories if they don't exist
+            if (!created) {
+                throw new RuntimeException("Failed to create directory: " + directoryPath);
+            }
+        }
     }
 
 }
