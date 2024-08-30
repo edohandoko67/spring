@@ -65,9 +65,21 @@ public class TrackingController {
     }
 
     @PostMapping("/noResi")
-    public ResponseEntity<Optional<Tracking>> listNoResi(@RequestBody Tracking noResi) {
-        if (trackingRepository.findByNoResi(noResi.getNoResi()).isPresent()) {
-            return ResponseEntity.ok(trackingRepository.findByNoResi(noResi.getNoResi()));
+    public ResponseEntity<TrackingResponse> listNoResi(@RequestBody Tracking noResi) {
+        Optional<Tracking> trackingOptional = trackingRepository.findByNoResi(noResi.getNoResi());
+        if (trackingOptional.isPresent()) {
+            Tracking tracking = trackingOptional.get();
+            MetaData metaData = new MetaData(200, "Success", "Data found");
+            TrackingInfo responseTracking = new TrackingInfo(
+                    tracking.getId_tracking(),
+                    tracking.getProduct().getName(),
+                    tracking.getJadwalSales().getNameSales(),
+                    tracking.getStatus(),
+                    tracking.getNoResi(),
+                    tracking.getTimestamp()
+            );
+            TrackingResponse apiResponse = new TrackingResponse(metaData, responseTracking);
+            return ResponseEntity.ok(apiResponse);
         }
         return ResponseEntity.notFound().build();
     }
