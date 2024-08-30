@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/jadwal_sales")
@@ -51,5 +53,21 @@ public class JadwalSalesController {
             ErrorResponse errorResponse = new ErrorResponse(metaData);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> listJadwalSales() {
+        try {
+            List<JadwalSales> jadwalSalesList = jadwalSalesRepository.findAll();
+            List<JadwalSales> jadwalSalesInfo = jadwalSalesList.stream().collect(Collectors.toList());
+            MetaData metaData = new MetaData(200, "Ok", "Berhasil mendapatkan data");
+            JadwalSalesResponseList response = new JadwalSalesResponseList(metaData, jadwalSalesInfo);
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        } catch (Exception e) {
+            MetaData metaData = new MetaData(404, "error", "Not found");
+            ErrorResponse errorResponse = new ErrorResponse(metaData);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
     }
 }
