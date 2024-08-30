@@ -1,7 +1,6 @@
 package com.rs.lacak.tracking;
 
 import com.rs.auth.MetaData;
-import com.rs.product.satuan.SatuanProduct;
 import com.rs.user.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,8 +29,9 @@ public class TrackingController {
             TrackingInfo responseTracking = new TrackingInfo(
                     tracking.getId_tracking(),
                     tracking.getProduct().getName(),
+                    tracking.getJadwalSales().getNameSales(),
                     tracking.getStatus(),
-                    tracking.getNo_resi(),
+                    tracking.getNoResi(),
                     tracking.getTimestamp()
             );
             TrackingResponse apiResponse = new TrackingResponse(metaData, responseTracking);
@@ -49,8 +50,9 @@ public class TrackingController {
                 .map(p -> new TrackingInfo(
                         p.getId_tracking(),
                         p.getProduct().getName(),
+                        p.getJadwalSales().getNameSales(),
                         p.getStatus(),
-                        p.getNo_resi(),
+                        p.getNoResi(),
                         p.getTimestamp()))
                 .collect(Collectors.toList());
         MetaData metaData = new MetaData(
@@ -60,5 +62,13 @@ public class TrackingController {
         );
         TrackingResponseList apiResponse = new TrackingResponseList(metaData, trackingInfo);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/noResi")
+    public ResponseEntity<Optional<Tracking>> listNoResi(@RequestBody Tracking noResi) {
+        if (trackingRepository.findByNoResi(noResi.getNoResi()).isPresent()) {
+            return ResponseEntity.ok(trackingRepository.findByNoResi(noResi.getNoResi()));
+        }
+        return ResponseEntity.notFound().build();
     }
 }

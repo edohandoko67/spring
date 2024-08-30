@@ -7,17 +7,20 @@ public class TrackingInfo {
     private int id_tracking;
     private String nameProduct;
 
+    private String name_sales;
+
     private String status;
 
-    private String no_resi;
+    private String noResi;
 
     private LocalDate timestamp;
 
-    public TrackingInfo(int id_tracking, String nameProduct, String status, String no_resi, LocalDate timestamp) {
+    public TrackingInfo(int id_tracking, String nameProduct, String name_sales, String status, String noResi, LocalDate timestamp) {
         this.id_tracking = id_tracking;
         this.nameProduct = nameProduct;
+        this.name_sales = name_sales;
         this.status = status;
-        this.no_resi = no_resi;
+        this.noResi = noResi;
         this.timestamp = timestamp;
     }
 
@@ -37,12 +40,12 @@ public class TrackingInfo {
         this.nameProduct = nameProduct;
     }
 
-    public LocalDate getTimestamp() {
-        return timestamp;
+    public String getName_sales() {
+        return name_sales;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
-        this.timestamp = timestamp;
+    public void setName_sales(String name_sales) {
+        this.name_sales = name_sales;
     }
 
     public String getStatus() {
@@ -53,11 +56,19 @@ public class TrackingInfo {
         this.status = status;
     }
 
-    public String getNo_resi() {
-        return no_resi;
+    public String getNoResi() {
+        return noResi;
     }
 
-    public void setNo_resi(String no_resi) {
-        this.no_resi = no_resi;
+    public void setNoResi(String noResi) {
+        this.noResi = noResi;
+    }
+
+    public LocalDate getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
     }
 }

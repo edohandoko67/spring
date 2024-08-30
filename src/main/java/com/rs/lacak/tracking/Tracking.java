@@ -2,6 +2,7 @@ package com.rs.lacak.tracking;
 
 
 import com.rs.product.Product;
+import com.rs.user.jadwalSales.JadwalSales;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -20,11 +21,15 @@ public class Tracking {
     @JoinColumn(name = "id_product")
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "jadwalsales_id")
+    private JadwalSales jadwalSales;
+
     private String status;
 
     @Column(name = "no_resi")
     @Length(max = 255)
-    private String no_resi;
+    private String noResi;
     @Column(name = "timestamp")
     private LocalDate timestamp;
 
@@ -59,6 +64,14 @@ public class Tracking {
         this.product = product;
     }
 
+    public JadwalSales getJadwalSales() {
+        return jadwalSales;
+    }
+
+    public void setJadwalSales(JadwalSales jadwalSales) {
+        this.jadwalSales = jadwalSales;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -75,11 +88,11 @@ public class Tracking {
         this.timestamp = timestamp;
     }
 
-    public String getNo_resi() {
-        return no_resi;
+    public String getNoResi() {
+        return noResi;
     }
 
-    public void setNo_resi(String no_resi) {
-        this.no_resi = no_resi;
+    public void setNoResi(String noResi) {
+        this.noResi = noResi;
     }
 }
