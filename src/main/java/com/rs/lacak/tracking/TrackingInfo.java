@@ -1,51 +1,36 @@
 package com.rs.lacak.tracking;
 
-import java.time.LocalDate;
+import com.rs.lacak.tracking.history.HistoryStatus;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class TrackingInfo {
-    private int id_tracking;
-    private String nameProduct;
-
-    private String name_sales;
-
+    private int idTracking;
     private String status;
-
     private String noResi;
+    private LocalDateTime timestamp;
+    private Boolean checkingData;
+    private Boolean checkingDataAfter;
+    private List<HistoryStatus> histories;
 
-    private LocalDate timestamp;
-
-    public TrackingInfo(int id_tracking, String nameProduct, String name_sales, String status, String noResi, LocalDate timestamp) {
-        this.id_tracking = id_tracking;
-        this.nameProduct = nameProduct;
-        this.name_sales = name_sales;
+    public TrackingInfo(int idTracking, String status, String noResi, LocalDateTime timestamp, Boolean checkingData, Boolean checkingDataAfter, List<HistoryStatus> histories) {
+        this.idTracking = idTracking;
         this.status = status;
         this.noResi = noResi;
         this.timestamp = timestamp;
+        this.checkingData = checkingData;
+        this.checkingDataAfter = checkingDataAfter;
+        this.histories = histories;
     }
 
-    public int getId_tracking() {
-        return id_tracking;
+    public int getIdTracking() {
+        return idTracking;
     }
 
-    public void setId_tracking(int id_tracking) {
-        this.id_tracking = id_tracking;
-    }
-
-    public String getNameProduct() {
-        return nameProduct;
-    }
-
-    public void setNameProduct(String nameProduct) {
-        this.nameProduct = nameProduct;
-    }
-
-    public String getName_sales() {
-        return name_sales;
-    }
-
-    public void setName_sales(String name_sales) {
-        this.name_sales = name_sales;
+    public void setIdTracking(int idTracking) {
+        this.idTracking = idTracking;
     }
 
     public String getStatus() {
@@ -64,11 +49,35 @@ public class TrackingInfo {
         this.noResi = noResi;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Boolean getCheckingData() {
+        return checkingData;
+    }
+
+    public void setCheckingData(Boolean checkingData) {
+        this.checkingData = checkingData;
+    }
+
+    public Boolean getCheckingDataAfter() {
+        return checkingDataAfter;
+    }
+
+    public void setCheckingDataAfter(Boolean checkingDataAfter) {
+        this.checkingDataAfter = checkingDataAfter;
+    }
+
+    public List<HistoryStatus> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<HistoryStatus> histories) {
+        this.histories = histories;
     }
 }

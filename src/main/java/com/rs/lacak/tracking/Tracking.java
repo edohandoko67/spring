@@ -1,12 +1,12 @@
 package com.rs.lacak.tracking;
 
 
-import com.rs.product.Product;
-import com.rs.user.jadwalSales.JadwalSales;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.rs.lacak.tracking.history.HistoryStatus;
 import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -15,15 +15,7 @@ public class Tracking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tracking")
-    private int id_tracking;
-
-    @ManyToOne
-    @JoinColumn(name = "id_product")
-    private Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "jadwalsales_id")
-    private JadwalSales jadwalSales;
+    private int idTracking;
 
     private String status;
 
@@ -31,45 +23,30 @@ public class Tracking {
     @Length(max = 255)
     private String noResi;
     @Column(name = "timestamp")
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
+    @Column(name = "check_column")
+    private Boolean checkingData;
+
+    @Column(name = "check_column_after")
+    private Boolean checkingDataAfter;
+
+    @OneToMany(mappedBy = "tracking", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<HistoryStatus> histories;
 
     public Tracking() {}
 
     @PrePersist
     protected void onCreate() {
-        this.timestamp = LocalDate.now();
+        this.timestamp = LocalDateTime.now();
     }
 
-//    public Tracking(int id_tracking, Product product, String status, String no_resi, LocalDateTime timestamp) {
-//        this.id_tracking = id_tracking;
-//        this.product = product;
-//        this.status = status;
-//        this.no_resi = no_resi;
-//        this.timestamp = timestamp;
-//    }
-
-    public int getId_tracking() {
-        return id_tracking;
+    public int getIdTracking() {
+        return idTracking;
     }
 
-    public void setId_tracking(int id_tracking) {
-        this.id_tracking = id_tracking;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public JadwalSales getJadwalSales() {
-        return jadwalSales;
-    }
-
-    public void setJadwalSales(JadwalSales jadwalSales) {
-        this.jadwalSales = jadwalSales;
+    public void setIdTracking(int idTracking) {
+        this.idTracking = idTracking;
     }
 
     public String getStatus() {
@@ -80,11 +57,11 @@ public class Tracking {
         this.status = status;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -94,5 +71,29 @@ public class Tracking {
 
     public void setNoResi(String noResi) {
         this.noResi = noResi;
+    }
+
+    public Boolean getCheckingData() {
+        return checkingData;
+    }
+
+    public void setCheckingData(Boolean checkingData) {
+        this.checkingData = checkingData;
+    }
+
+    public Boolean getCheckingDataAfter() {
+        return checkingDataAfter;
+    }
+
+    public void setCheckingDataAfter(Boolean checkingDataAfter) {
+        this.checkingDataAfter = checkingDataAfter;
+    }
+
+    public List<HistoryStatus> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<HistoryStatus> histories) {
+        this.histories = histories;
     }
 }
