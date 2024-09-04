@@ -29,16 +29,16 @@ public class RegistrationInfo {
     @Length(max = 16)
     private String number;
 
-    public RegistrationInfo() {
+    private Integer gender;
 
-    }
 
-    public RegistrationInfo(String username, String password, @Nullable String name, @Nullable String address, @Nullable String number) {
+    public RegistrationInfo(String username, String password, @Nullable String name, @Nullable String address, @Nullable String number, Integer gender) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.address = address;
         this.number = number;
+        this.gender = gender;
     }
 
     public String getUsername() {
@@ -82,5 +82,13 @@ public class RegistrationInfo {
 
     public void setNumber(@Nullable String number) {
         this.number = number;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 }

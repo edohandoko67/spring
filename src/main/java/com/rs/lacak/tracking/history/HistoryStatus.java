@@ -22,6 +22,9 @@ public class HistoryStatus {
     @Column(name = "status_history")
     private String status;
 
+    @Column(name = "check_history")
+    private Boolean checkHistory;
+
     @Column(name = "timestamp")
     private LocalDateTime localDateTime;
 
@@ -47,6 +50,14 @@ public class HistoryStatus {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Boolean getCheckHistory() {
+        return checkHistory;
+    }
+
+    public void setCheckHistory(Boolean checkHistory) {
+        this.checkHistory = checkHistory;
     }
 
     public LocalDateTime getLocalDateTime() {

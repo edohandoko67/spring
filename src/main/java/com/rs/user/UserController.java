@@ -53,9 +53,10 @@ public class UserController {
             LoginInfo responseData = new LoginInfo(
                     user.getName(),
                     user.getPassword(),
-                    role,
+                    user.getNumber(),
                     accessToken,
-                    user.getNumber()
+                    role,
+                    user.getGender()
             );
             //LoginResponse loginResponse = new LoginResponse(metaData,user.getUsername(), accessToken, role);
             LoginResponse loginResponse = new LoginResponse(metaData, responseData);
@@ -77,13 +78,15 @@ public class UserController {
             userInfo.setName(registrationInfo.getName());
             userInfo.addRole(new Role(1));
             userInfo.setNumber(registrationInfo.getNumber());
+            userInfo.setGender(registrationInfo.getGender());
             MetaData metaData = new MetaData(201, "success", "Berhasil mendaftar");
             RegistrationInfo responseData = new RegistrationInfo(
                     userInfo.getUsername(),
                     userInfo.getPassword(),
                     userInfo.getName(),
                     userInfo.getAddress(),
-                    userInfo.getNumber()
+                    userInfo.getNumber(),
+                    userInfo.getGender()
             );
             RegisterResponse response = new RegisterResponse(metaData, responseData);
             userInfoRepository.save(userInfo);

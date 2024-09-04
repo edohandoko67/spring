@@ -40,17 +40,21 @@ public class UserInfo implements UserDetails{
     @Length(max = 16)
     private String number;
 
+    @Column(name = "gender")
+    private Integer gender;
+
     public UserInfo(){
 
     }
 
-    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number) {
+    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number, Integer gender) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.address = address;
         this.number = number;
+        this.gender = gender;
     }
 
     @ManyToMany
@@ -103,6 +107,14 @@ public class UserInfo implements UserDetails{
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     @Override

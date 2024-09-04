@@ -22,6 +22,7 @@ public class LoginInfo {
     private String number;
     private String accessToken;
     private String role;
+    private Integer gender;
 
 //    public LoginInfo(String username, String password, String accessToken, String role) {
 //        this.username = username;
@@ -30,12 +31,14 @@ public class LoginInfo {
 //        this.role = role;
 //    }
 
-    public LoginInfo(String username, String password, String role, String accessToken, @Nullable String number) {
+
+    public LoginInfo(String username, String password, @Nullable String number, String accessToken, String role, Integer gender) {
         this.username = username;
         this.password = password;
-        this.role = role;
-        this.accessToken = accessToken;
         this.number = number;
+        this.accessToken = accessToken;
+        this.role = role;
+        this.gender = gender;
     }
 
     public String getUsername() {
@@ -76,5 +79,13 @@ public class LoginInfo {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 }
