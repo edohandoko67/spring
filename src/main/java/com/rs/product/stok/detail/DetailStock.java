@@ -1,9 +1,11 @@
 package com.rs.product.stok.detail;
 
 import com.rs.product.Product;
+import com.rs.product.cart.Cart;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "detail_stock_image")
@@ -29,6 +31,9 @@ public class DetailStock {
 
     @Column(name = "name_varian")
     private String nameVarian;
+
+    @OneToMany(mappedBy = "detailStock")
+    private Set<Cart> cart;
 
     public DetailStock() {}
 
@@ -78,5 +83,13 @@ public class DetailStock {
 
     public void setNameVarian(String nameVarian) {
         this.nameVarian = nameVarian;
+    }
+
+    public Set<Cart> getChart() {
+        return cart;
+    }
+
+    public void setChart(Set<Cart> cart) {
+        this.cart = cart;
     }
 }
