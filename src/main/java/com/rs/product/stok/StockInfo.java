@@ -19,12 +19,14 @@ public class StockInfo {
     @Length(max = 99999)
     private int jumlah_stock;
 
+    private int price;
 
-    public StockInfo(int id_stock, String productName, String image_product, int jumlah_stock) {
+    public StockInfo(int id_stock, String productName, String image_product, int jumlah_stock, int price) {
         this.id_stock = id_stock;
         this.productName = productName;
         this.image_product = image_product;
         this.jumlah_stock = jumlah_stock;
+        this.price = price;
     }
 
     public String getImage_product() {
@@ -57,5 +59,13 @@ public class StockInfo {
 
     public void setJumlah_stock(int jumlah_stock) {
         this.jumlah_stock = jumlah_stock;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

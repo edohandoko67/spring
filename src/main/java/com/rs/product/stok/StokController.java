@@ -34,7 +34,8 @@ public class StokController {
                         stock.getId_stok(),
                         stock.getProduct().getName(),
                         stock.getProduct().getImage_product(),
-                        stock.getJumlah_stock()
+                        stock.getJumlah_stock(),
+                                stock.getPrice()
                 ))
                 .collect(Collectors.toList());
         MetaData metaData = new MetaData(200, "Berhasil", "Data ditemukan");

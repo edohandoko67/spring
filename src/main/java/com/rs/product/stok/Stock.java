@@ -23,14 +23,11 @@ public class Stock {
     @Column(name = "jumlah_stok")
     private int jumlah_stock;
 
+    @Column(name = "harga")
+    private int price;
 
     public Stock() {}
 
-    public Stock(int id_stok, Product product, int jumlah_stock) {
-        this.id_stok = id_stok;
-        this.product = product;
-        this.jumlah_stock = jumlah_stock;
-    }
 
     public int getId_stok() {
         return id_stok;
@@ -54,5 +51,13 @@ public class Stock {
 
     public void setJumlah_stock(int jumlah_stock) {
         this.jumlah_stock = jumlah_stock;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
