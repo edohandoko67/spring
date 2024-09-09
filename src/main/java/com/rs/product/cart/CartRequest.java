@@ -2,16 +2,18 @@ package com.rs.product.cart;
 
 public class CartRequest {
 
-    private int stockId;
+    private int id_stock;
     private int quantity;
 
     // Getters and Setters
-    public int getStockId() {
-        return stockId;
+
+
+    public int getId_stock() {
+        return id_stock;
     }
 
-    public void setStockId(int stockId) {
-        this.stockId = stockId;
+    public void setId_stock(int id_stock) {
+        this.id_stock = id_stock;
     }
 
     public int getQuantity() {
