@@ -1,5 +1,6 @@
 package com.rs.user;
 
+import com.rs.product.cart.Cart;
 import com.rs.role.Role;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
@@ -43,11 +44,14 @@ public class UserInfo implements UserDetails{
     @Column(name = "gender")
     private Integer gender;
 
+    @OneToMany(mappedBy = "userInfo")
+    private Set<Cart> cart;
+
     public UserInfo(){
 
     }
 
-    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number, Integer gender) {
+    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number, Integer gender, Set<Cart> cart) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -55,6 +59,7 @@ public class UserInfo implements UserDetails{
         this.address = address;
         this.number = number;
         this.gender = gender;
+        this.cart = cart;
     }
 
     @ManyToMany
@@ -115,6 +120,14 @@ public class UserInfo implements UserDetails{
 
     public void setGender(Integer gender) {
         this.gender = gender;
+    }
+
+    public Set<Cart> getCart() {
+        return cart;
+    }
+
+    public void setCart(Set<Cart> cart) {
+        this.cart = cart;
     }
 
     @Override

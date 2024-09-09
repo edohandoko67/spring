@@ -1,6 +1,7 @@
 package com.rs.product.cart;
 
 import com.rs.product.stok.detail.DetailStock;
+import com.rs.user.UserInfo;
 
 import javax.persistence.*;
 
@@ -16,6 +17,10 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "id_stock")
     private DetailStock detailStock;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private UserInfo userInfo;
 
     @Column(name = "jumlah_stock")
     private int jumlah_stock;
@@ -37,6 +42,14 @@ public class Cart {
 
     public void setDetailStock(DetailStock detailStock) {
         this.detailStock = detailStock;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public int getJumlah_stock() {
