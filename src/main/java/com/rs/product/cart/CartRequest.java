@@ -6,6 +6,12 @@ public class CartRequest {
     private int id_stock;
     private int quantity;
 
+    public CartRequest(int userId, int id_stock, int quantity) {
+        this.userId = userId;
+        this.id_stock = id_stock;
+        this.quantity = quantity;
+    }
+
     // Getters and Setters
 
 

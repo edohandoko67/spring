@@ -4,6 +4,7 @@ import com.rs.product.stok.detail.DetailStock;
 import com.rs.user.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<Cart, Integer> {
@@ -13,5 +14,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     // objek UserInfo, bukan hanya ID-nya.
     // Metode untuk mencari Cart berdasarkan userInfo dan detailStock
     Cart findByUserInfoAndDetailStock(UserInfo userInfo, DetailStock detailStock);
+
+    List<Cart> findByUserInfoId(Integer userId);
 
 }

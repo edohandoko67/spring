@@ -6,9 +6,9 @@ import java.util.List;
 
 public class CartResponseData {
     private MetaData metaData;
-    List<CartInfo> response;
+    CartRequest response;
 
-    public CartResponseData(MetaData metaData, List<CartInfo> response) {
+    public CartResponseData(MetaData metaData, CartRequest response) {
         this.metaData = metaData;
         this.response = response;
     }
@@ -21,11 +21,11 @@ public class CartResponseData {
         this.metaData = metaData;
     }
 
-    public List<CartInfo> getResponse() {
+    public CartRequest getResponse() {
         return response;
     }
 
-    public void setResponse(List<CartInfo> response) {
+    public void setResponse(CartRequest response) {
         this.response = response;
     }
 }

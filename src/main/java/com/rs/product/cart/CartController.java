@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cart")
@@ -31,7 +33,13 @@ public class CartController {
         try {
             addToCartService(request.getUserId(), request.getId_stock(), request.getQuantity());
             MetaData metaData = new MetaData(201, "Berhasil", "Menambahkan data");
-            return ResponseEntity.status(HttpStatus.CREATED).body(metaData);
+            CartRequest cartRequest = new CartRequest(
+                    request.getId_stock(),
+                    request.getUserId(),
+                    request.getQuantity()
+            );
+            CartResponseData apiResponse = new CartResponseData(metaData, cartRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -69,7 +77,7 @@ public class CartController {
             cart.setDetailStock(detailStock);
             cart.setJumlah_stock(quantity);
             cart.setTotal(detailStock.getPrice() * quantity);
-            MetaData metaData = new MetaData(201, "Berhasil", "Menambahkan data");
+            //MetaData metaData = new MetaData(201, "Berhasil", "Menambahkan data");
 
             // Simpan data ke tabel Chart
             cartRepository.save(cart);
@@ -80,18 +88,47 @@ public class CartController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<CartResponseData> listData() {
+    public ResponseEntity<CartResponse> listData() {
         List<Cart> list = cartRepository.findAll();
         List<CartInfo> cartInfo = list.stream()
                 .map(cart -> new CartInfo(
                         cart.getIdChart(),
                         cart.getDetailStock().getNameVarian(),
+                        cart.getDetailStock().getImage(),
                         cart.getUserInfo().getName(),
                         cart.getJumlah_stock(),
                         cart.getTotal()
                 )).toList();
         MetaData metaData = new MetaData(200, "Berhasil", "Mendapatkan data");
-        CartResponseData responseData = new CartResponseData(metaData, cartInfo);
+        CartResponse responseData = new CartResponse(metaData, cartInfo);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
+
+    @PostMapping("/list")
+    public ResponseEntity<CartResponse> listDataById(@RequestBody @Valid CartRequest request) {
+        int userId = request.getUserId(); // Ambil userId dari objek request
+
+        List<Cart> carts = cartRepository.findByUserInfoId(userId);
+
+        if (carts.isEmpty()) {
+            throw new RuntimeException("Cart not found with userId: " + userId);
+        }
+
+        // list berdasarkan id
+        List<CartInfo> cartInfos = carts.stream()
+                .map(cart -> new CartInfo(
+                        cart.getIdChart(),
+                        cart.getDetailStock().getNameVarian(),
+                        cart.getDetailStock().getImage(),
+                        cart.getUserInfo().getName(),
+                        cart.getJumlah_stock(),
+                        cart.getTotal()
+                ))
+                .collect(Collectors.toList());
+
+        MetaData metaData = new MetaData(200, "Berhasil", "Mendapatkan data");
+        CartResponse responseData = new CartResponse(metaData, cartInfos);
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+
 }

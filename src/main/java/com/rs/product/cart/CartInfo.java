@@ -5,13 +5,15 @@ import com.rs.product.stok.detail.DetailStock;
 public class CartInfo {
     private int idChart;
     private String name;
+    private String image;
     private String userName;
     private int jumlah_stock;
     private int total;
 
-    public CartInfo(int idChart, String name, String userName, int jumlah_stock, int total) {
+    public CartInfo(int idChart, String name, String image, String userName, int jumlah_stock, int total) {
         this.idChart = idChart;
         this.name = name;
+        this.image = image;
         this.userName = userName;
         this.jumlah_stock = jumlah_stock;
         this.total = total;
@@ -31,6 +33,14 @@ public class CartInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getUserName() {
