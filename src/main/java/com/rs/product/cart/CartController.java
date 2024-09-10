@@ -95,6 +95,8 @@ public class CartController {
                         cart.getIdChart(),
                         cart.getDetailStock().getNameVarian(),
                         cart.getDetailStock().getImage(),
+                        cart.getDetailStock().getPrice(),
+                        cart.getDetailStock().getJumlah_stock(),
                         cart.getUserInfo().getName(),
                         cart.getJumlah_stock(),
                         cart.getTotal()
@@ -120,6 +122,8 @@ public class CartController {
                         cart.getIdChart(),
                         cart.getDetailStock().getNameVarian(),
                         cart.getDetailStock().getImage(),
+                        cart.getDetailStock().getPrice(),
+                        cart.getDetailStock().getJumlah_stock(),
                         cart.getUserInfo().getName(),
                         cart.getJumlah_stock(),
                         cart.getTotal()
