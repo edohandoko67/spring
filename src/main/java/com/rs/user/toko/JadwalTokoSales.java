@@ -52,6 +52,12 @@ public class JadwalTokoSales {
     @Column(name = "image_detail")
     private String imageDetail;
 
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name = "longitude")
+    private double longitude;
+
 //    @OneToMany(mappedBy = "jadwalTokoSales")
 //    private Set<JadwalTokoSales> jadwalTokoSales;
 //
@@ -65,8 +71,9 @@ public class JadwalTokoSales {
 
     public JadwalTokoSales() {}
 
-    public JadwalTokoSales(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image, String imageDetail) {
+    public JadwalTokoSales(int jadwalToko_id, UserInfo userInfo, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image, String imageDetail, double latitude, double longitude) {
         this.jadwalToko_id = jadwalToko_id;
+        this.userInfo = userInfo;
         this.name_toko = name_toko;
         this.address = address;
         this.nomer_so = nomer_so;
@@ -78,6 +85,8 @@ public class JadwalTokoSales {
         this.number = number;
         this.image = image;
         this.imageDetail = imageDetail;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getNomer_so() {
@@ -183,7 +192,24 @@ public class JadwalTokoSales {
     public void setNumber(String number) {
         this.number = number;
     }
-//    @Override
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "JadwalTokoSales{" +
 //                "jadwalTokoId=" + jadwalToko_id +

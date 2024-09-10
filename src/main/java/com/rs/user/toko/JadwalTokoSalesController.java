@@ -101,6 +101,7 @@ public class JadwalTokoSalesController {
             MetaData metaData = new MetaData(201, "success", "Successfully added data");
             JadwalTokoSales response = new JadwalTokoSales(
                     savedJadwalToko.getJadwalToko_id(),
+                    savedJadwalToko.getUserInfo(),
                     savedJadwalToko.getName_toko(),
                     savedJadwalToko.getAddress(),
                     savedJadwalToko.getNomer_so(),
@@ -111,7 +112,9 @@ public class JadwalTokoSalesController {
                     savedJadwalToko.getNamaOwner(),
                     savedJadwalToko.getNumber(),
                     savedJadwalToko.getImage(),
-                    savedJadwalToko.getImageDetail()
+                    savedJadwalToko.getImageDetail(),
+                    savedJadwalToko.getLatitude(),
+                    savedJadwalToko.getLongitude()
             );
             JadwalTokoSalesResponse apiResponse = new JadwalTokoSalesResponse(metaData, response);
             return ResponseEntity.created(newJadwalTokoURI).body(apiResponse);
@@ -149,7 +152,9 @@ public class JadwalTokoSalesController {
                             p.getNumber(),
                             p.getImage(),
                             p.getImageDetail(),
-                            p.getUserInfo().getName()
+                            p.getUserInfo().getName(),
+                            p.getLatitude(),
+                            p.getLongitude()
                     );
                 })
                 .collect(Collectors.toList());
@@ -184,7 +189,9 @@ public class JadwalTokoSalesController {
                         sales.getNumber(),
                         sales.getImage(),
                         sales.getImageDetail(),
-                        sales.getUserInfo().getName()
+                        sales.getUserInfo().getName(),
+                        sales.getLatitude(),
+                        sales.getLongitude()
                 )).collect(Collectors.toList());
         MetaData metaData = new MetaData(200, "Berhasil", "Mendapatkan data");
         ResponseToko apiResponse = new ResponseToko(metaData, jadwalTokoSalesInfo);
