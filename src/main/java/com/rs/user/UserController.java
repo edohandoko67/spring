@@ -51,6 +51,7 @@ public class UserController {
             String role = user.getRoles().toArray()[0].toString();
             MetaData metaData = new MetaData(200, "success", "Selamat Datang" + " " + user.getName());
             LoginInfo responseData = new LoginInfo(
+                    user.getId(),
                     user.getName(),
                     user.getPassword(),
                     user.getNumber(),
@@ -81,6 +82,7 @@ public class UserController {
             userInfo.setGender(registrationInfo.getGender());
             MetaData metaData = new MetaData(201, "success", "Berhasil mendaftar");
             RegistrationInfo responseData = new RegistrationInfo(
+                    userInfo.getId(),
                     userInfo.getUsername(),
                     userInfo.getPassword(),
                     userInfo.getName(),

@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import javax.validation.constraints.NotNull;
 
 public class LoginInfo {
+    private int idUser;
     @NotNull
     @Length(min = 5, max = 50)
     private String username;
@@ -32,13 +33,22 @@ public class LoginInfo {
 //    }
 
 
-    public LoginInfo(String username, String password, @Nullable String number, String accessToken, String role, Integer gender) {
+    public LoginInfo(int idUser, String username, String password, @Nullable String number, String accessToken, String role, Integer gender) {
+        this.idUser = idUser;
         this.username = username;
         this.password = password;
         this.number = number;
         this.accessToken = accessToken;
         this.role = role;
         this.gender = gender;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getUsername() {

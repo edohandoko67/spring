@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class RegistrationInfo {
+    private int idUser;
     @NotNull
     @Length(min = 5, max = 16)
     @Pattern(regexp = "^([a-zA-Z0-9]+)$")
@@ -31,14 +32,22 @@ public class RegistrationInfo {
 
     private Integer gender;
 
-
-    public RegistrationInfo(String username, String password, @Nullable String name, @Nullable String address, @Nullable String number, Integer gender) {
+    public RegistrationInfo(int idUser, String username, String password, @Nullable String name, @Nullable String address, @Nullable String number, Integer gender) {
+        this.idUser = idUser;
         this.username = username;
         this.password = password;
         this.name = name;
         this.address = address;
         this.number = number;
         this.gender = gender;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getUsername() {
