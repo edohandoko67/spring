@@ -45,22 +45,22 @@ public class JadwalTokoSalesInfo {
     @Column(name = "image_detail")
     private String imageDetail; // Untuk menyimpan gambar dalam bentuk byte array
 
-
-    @OneToMany(mappedBy = "jadwalTokoSales")
-    private Set<JadwalTokoSales> jadwalTokoSales;
-
-    public Set<JadwalTokoSales> getJadwalTokoSales() {
-        return jadwalTokoSales;
-    }
-
-    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
-        this.jadwalTokoSales = jadwalTokoSales;
-    }
+    private String nameUser;
 
 
-    public JadwalTokoSalesInfo() {}
+//    @OneToMany(mappedBy = "jadwalTokoSales")
+//    private Set<JadwalTokoSales> jadwalTokoSales;
+//
+//    public Set<JadwalTokoSales> getJadwalTokoSales() {
+//        return jadwalTokoSales;
+//    }
+//
+//    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
+//        this.jadwalTokoSales = jadwalTokoSales;
+//    }
 
-    public JadwalTokoSalesInfo(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image, String imageDetail) {
+
+    public JadwalTokoSalesInfo(int jadwalToko_id, String name_toko, String address, String nomer_so, String provinsi, String kota, String kecamatan, String desa, String namaOwner, String number, String image, String imageDetail, String nameUser) {
         this.jadwalToko_id = jadwalToko_id;
         this.name_toko = name_toko;
         this.address = address;
@@ -73,6 +73,7 @@ public class JadwalTokoSalesInfo {
         this.number = number;
         this.image = image;
         this.imageDetail = imageDetail;
+        this.nameUser = nameUser;
     }
 
     public String getNomer_so() {
@@ -169,6 +170,14 @@ public class JadwalTokoSalesInfo {
 
     public void setImageDetail(String imageDetail) {
         this.imageDetail = imageDetail;
+    }
+
+    public String getNameUser() {
+        return nameUser;
+    }
+
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 
     //    @Override

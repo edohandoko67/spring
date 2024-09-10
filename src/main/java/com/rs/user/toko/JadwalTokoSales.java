@@ -1,5 +1,7 @@
 package com.rs.user.toko;
 
+import com.rs.user.UserInfo;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,6 +12,10 @@ public class JadwalTokoSales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "jadwal_toko_id")
     private int jadwalToko_id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_info")
+    private UserInfo userInfo;
 
     @Column(name = "name_toko")
     private String name_toko;
@@ -46,16 +52,16 @@ public class JadwalTokoSales {
     @Column(name = "image_detail")
     private String imageDetail;
 
-    @OneToMany(mappedBy = "jadwalTokoSales")
-    private Set<JadwalTokoSales> jadwalTokoSales;
-
-    public Set<JadwalTokoSales> getJadwalTokoSales() {
-        return jadwalTokoSales;
-    }
-
-    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
-        this.jadwalTokoSales = jadwalTokoSales;
-    }
+//    @OneToMany(mappedBy = "jadwalTokoSales")
+//    private Set<JadwalTokoSales> jadwalTokoSales;
+//
+//    public Set<JadwalTokoSales> getJadwalTokoSales() {
+//        return jadwalTokoSales;
+//    }
+//
+//    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
+//        this.jadwalTokoSales = jadwalTokoSales;
+//    }
 
     public JadwalTokoSales() {}
 
@@ -80,6 +86,14 @@ public class JadwalTokoSales {
 
     public void setNomer_so(String nomer_so) {
         this.nomer_so = nomer_so;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public String getImageDetail() {

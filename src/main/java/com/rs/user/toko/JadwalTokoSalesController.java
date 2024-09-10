@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
 import javax.imageio.ImageIO;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -147,7 +148,8 @@ public class JadwalTokoSalesController {
                             p.getNamaOwner(),
                             p.getNumber(),
                             p.getImage(),
-                            p.getImageDetail()
+                            p.getImageDetail(),
+                            p.getUserInfo().getName()
                     );
                 })
                 .collect(Collectors.toList());
@@ -156,6 +158,37 @@ public class JadwalTokoSalesController {
         );
         ResponseToko apiRespinse = new ResponseToko(metaData, jadwalTokoSalesInfo);
         return new ResponseEntity<>(apiRespinse, HttpStatus.OK);
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<ResponseToko> listTokoSalesById(@RequestBody @Valid TokoRequest tokoRequest) {
+        int userId = tokoRequest.getUserId();
+
+        List<JadwalTokoSales> jadwalTokoSales = jadwalTokoSalesRepository.findByUserInfoId(userId);
+
+        if (jadwalTokoSales.isEmpty()) {
+            throw new RuntimeException("Toko not found with userId: " + userId);
+        }
+
+        List<JadwalTokoSalesInfo> jadwalTokoSalesInfo = jadwalTokoSales.stream()
+                .map(sales -> new JadwalTokoSalesInfo(
+                        sales.getJadwalToko_id(),
+                        sales.getName_toko(),
+                        sales.getAddress(),
+                        sales.getNomer_so(),
+                        sales.getProvinsi(),
+                        sales.getKota(),
+                        sales.getKecamatan(),
+                        sales.getDesa(),
+                        sales.getNamaOwner(),
+                        sales.getNumber(),
+                        sales.getImage(),
+                        sales.getImageDetail(),
+                        sales.getUserInfo().getName()
+                )).collect(Collectors.toList());
+        MetaData metaData = new MetaData(200, "Berhasil", "Mendapatkan data");
+        ResponseToko apiResponse = new ResponseToko(metaData, jadwalTokoSalesInfo);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{jadwal_toko_id}")

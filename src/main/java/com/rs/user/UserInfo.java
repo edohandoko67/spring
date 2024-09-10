@@ -2,6 +2,7 @@ package com.rs.user;
 
 import com.rs.product.cart.Cart;
 import com.rs.role.Role;
+import com.rs.user.toko.JadwalTokoSales;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,11 +48,14 @@ public class UserInfo implements UserDetails{
     @OneToMany(mappedBy = "userInfo")
     private Set<Cart> cart;
 
+    @OneToMany(mappedBy = "userInfo")
+    private Set<JadwalTokoSales> jadwalTokoSales;
+
     public UserInfo(){
 
     }
 
-    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number, Integer gender, Set<Cart> cart) {
+    public UserInfo(Integer id, String username, String password, @Nullable String name, @Nullable String address, String number, Integer gender, Set<Cart> cart, Set<JadwalTokoSales> jadwalTokoSales) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -60,6 +64,7 @@ public class UserInfo implements UserDetails{
         this.number = number;
         this.gender = gender;
         this.cart = cart;
+        this.jadwalTokoSales = jadwalTokoSales;
     }
 
     @ManyToMany
@@ -128,6 +133,14 @@ public class UserInfo implements UserDetails{
 
     public void setCart(Set<Cart> cart) {
         this.cart = cart;
+    }
+
+    public Set<JadwalTokoSales> getJadwalTokoSales() {
+        return jadwalTokoSales;
+    }
+
+    public void setJadwalTokoSales(Set<JadwalTokoSales> jadwalTokoSales) {
+        this.jadwalTokoSales = jadwalTokoSales;
     }
 
     @Override
