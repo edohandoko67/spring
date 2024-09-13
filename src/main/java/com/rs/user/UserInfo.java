@@ -51,6 +51,7 @@ public class UserInfo implements UserDetails{
     @OneToMany(mappedBy = "userInfo")
     private Set<JadwalTokoSales> jadwalTokoSales;
 
+
     public UserInfo(){
 
     }
