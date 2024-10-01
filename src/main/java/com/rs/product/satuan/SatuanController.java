@@ -20,7 +20,7 @@ public class SatuanController {
     private SatuanRepository satuanRepository;
 
     @GetMapping("/list")
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
+    //@RolesAllowed({"ROLE_ADMIN", "ROLE_CUSTOMER"})
     public ResponseEntity<SatuanResponse> listSatuan() {
         List<SatuanProduct> satuanProductList = satuanRepository.findAll();
         List<SatuanProductInfo> satuanProductsInfo = satuanProductList.stream()

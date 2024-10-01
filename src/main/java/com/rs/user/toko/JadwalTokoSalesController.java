@@ -165,7 +165,7 @@ public class JadwalTokoSalesController {
         return new ResponseEntity<>(apiRespinse, HttpStatus.OK);
     }
 
-    @PostMapping("/list")
+    @PostMapping("/listId")
     public ResponseEntity<ResponseToko> listTokoSalesById(@RequestBody @Valid TokoRequest tokoRequest) {
         int userId = tokoRequest.getUserId();
 
